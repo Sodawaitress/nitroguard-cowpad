@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CowPad Ops — Farm Operations</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:   #F4F6F5;
+  --accent: #1B6B3C;
+  --amber:  #9A5F00;
+  --red:    #B02028;
+  --orange: #C05800;
+  --yellow: #9A7000;
+  --green:  #1B6B3C;
+  --blue:   #1258A0;
+  --surface:#FFFFFF;
+  --border: #C8D5CC;
+  --border2:#E2EBE6;
+  --ink:    #1A2820;
+  --sub:    #587068;
+  --faint:  #8AA898;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+#wrapper{display:flex;height:100vh}
+
+/* ── Panel ── */
+#panel{
+  width:280px;min-width:280px;background:var(--surface);
+  display:flex;flex-direction:column;overflow:hidden;
+  border-right:1px solid var(--border);
+}
+.brand{
+  padding:1rem 1.2rem .85rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.brand h1{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:1.2rem;font-weight:700;color:var(--ink);letter-spacing:.02em;
+}
+.brand h1 span{color:var(--accent)}
+.brand h1 sup{font-size:.55rem;color:var(--amber);letter-spacing:.1em;font-family:monospace;vertical-align:super}
+.switch-btn{
+  font-size:.6rem;font-family:monospace;letter-spacing:.08em;
+  color:var(--sub);border:1px solid var(--border);
+  border-radius:3px;padding:.25rem .5rem;cursor:pointer;
+  text-decoration:none;transition:all .15s;
+}
+.switch-btn:hover{color:rgba(255,255,255,.7);border-color:rgba(74,154,106,.4)}
+
+#panel-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+#panel-scroll::-webkit-scrollbar{width:3px}
+#panel-scroll::-webkit-scrollbar-thumb{background:var(--border)}
+
+  .section{padding:.7rem 1rem;border-bottom:1px solid var(--border2)}
+.slabel{
+  font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent);font-family:monospace;margin-bottom:.5rem;
+}
+
+/* ── Farm selector ── */
+.farm-card{
+  background:var(--bg,#F4F6F5);border:1px solid var(--border2);
+  border-radius:.35rem;padding:.55rem .7rem;cursor:pointer;
+  transition:all .15s;margin-bottom:.3rem;
+}
+.farm-card:hover,.farm-card.active{background:var(--greenl,#DFF2E8);border-color:#90C8A8}
+  .farm-card.active{border-left:3px solid var(--accent)}
+  .farm-name{font-size:.78rem;color:var(--ink);font-weight:600;margin-bottom:.2rem}
+  .farm-meta{font-size:.62rem;color:var(--sub);font-family:monospace;line-height:1.7}
+.risk-badge{
+  display:inline-block;font-size:.6rem;font-family:monospace;font-weight:700;
+  padding:1px 6px;border-radius:2px;letter-spacing:.06em;
+}
+.risk-critical{background:#FADADD;color:#B02028;border:1px solid #D09090}
+.risk-high{background:#FFE8D8;color:#9A4A00;border:1px solid #D09870}
+.risk-moderate{background:#FFF8D8;color:#8A6800;border:1px solid #D0C070}
+
+/* ── Alerts ── */
+#alert-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--red);color:#fff;border-radius:50%;
+  width:17px;height:17px;font-size:.65rem;font-weight:700;
+  font-family:monospace;margin-left:.4rem;
+}
+.alert-item{
+  background:rgba(229,57,53,.08);border:1px solid rgba(229,57,53,.25);
+  border-left:3px solid var(--red);border-radius:.3rem;
+  padding:.45rem .6rem;margin-bottom:.3rem;cursor:pointer;
+}
+.alert-item:hover{background:rgba(229,57,53,.14)}
+.alert-title{font-size:.72rem;color:#ff8a80;font-weight:600;margin-bottom:.18rem}
+.alert-desc{font-size:.63rem;color:rgba(255,255,255,.4);line-height:1.6}
+.alert-empty{font-size:.68rem;color:rgba(255,255,255,.2);font-family:monospace;text-align:center;padding:.6rem 0}
+
+/* ── Pad list ── */
+.pad-item{
+  display:flex;align-items:center;gap:.55rem;
+  padding:.42rem .5rem;border-radius:.3rem;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  margin-bottom:.28rem;cursor:pointer;transition:background .12s;
+}
+.pad-item:hover{background:rgba(74,154,106,.07)}
+.pad-icon{
+  width:22px;height:22px;border-radius:3px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;color:#fff;
+}
+.pad-info{flex:1;min-width:0}
+.pad-name{font-size:.7rem;color:rgba(255,255,255,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pad-status{font-size:.6rem;font-family:monospace;margin-top:.1rem}
+.sat-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:.25rem;overflow:hidden}
+.sat-fill{height:100%;border-radius:2px;transition:width .5s}
+.pad-actions{display:flex;gap:.3rem;flex-shrink:0}
+.pad-btn{
+  font-size:.58rem;font-family:monospace;padding:2px 6px;
+  border-radius:2px;cursor:pointer;border:1px solid;
+  transition:all .12s;
+}
+.pad-btn-cycle{color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1)}
+.pad-btn-cycle:hover{color:rgba(255,255,255,.8);border-color:rgba(74,154,106,.4)}
+.pad-btn-del{color:rgba(229,57,53,.5);border-color:rgba(229,57,53,.15)}
+.pad-btn-del:hover{color:#ff8a80;border-color:rgba(229,57,53,.4)}
+.pad-empty{font-size:.68rem;color:rgba(255,255,255,.2);font-family:monospace;text-align:center;padding:.8rem 0;line-height:1.8}
+
+/* ── Map ── */
+#map-wrap{flex:1;position:relative}
+#map{width:100%;height:100%}
+
+/* ── Floating controls ── */
+#place-btn{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  z-index:1000;padding:.65rem 1.6rem;font-size:.8rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;font-family:monospace;
+  background:var(--accent);color:#fff;border:none;border-radius:4px;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 20px rgba(74,154,106,.4);white-space:nowrap;
+}
+#place-btn:hover{background:#3d8a5c;box-shadow:0 4px 28px rgba(74,154,106,.6)}
+#place-btn.active{background:var(--red);box-shadow:0 4px 20px rgba(229,57,53,.4)}
+#place-btn.active:hover{background:#c62828}
+
+#zoom-hint{
+  position:absolute;bottom:90px;left:50%;transform:translateX(-50%);
+  z-index:1000;background:rgba(4,14,8,.85);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,193,7,.3);border-radius:4px;
+  padding:.4rem .8rem;font-size:.65rem;font-family:monospace;
+  color:rgba(255,193,7,.8);letter-spacing:.05em;pointer-events:none;
+  display:none;white-space:nowrap;
+}
+
+/* Zone type picker popup */
+#zone-picker{
+  position:absolute;z-index:2000;
+  background:rgba(4,14,8,.95);backdrop-filter:blur(16px);
+  border:1px solid rgba(74,154,106,.3);border-top:2px solid var(--accent);
+  border-radius:4px;padding:.65rem .75rem;min-width:210px;
+  display:none;
+}
+#zone-picker .zp-title{font-size:.62rem;color:rgba(255,255,255,.3);font-family:monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+#zone-picker .zp-grid{display:grid;grid-template-columns:1fr 1fr;gap:.3rem}
+.zp-btn{
+  padding:.45rem .5rem;border-radius:.3rem;cursor:pointer;
+  border:1px solid rgba(255,255,255,.08);font-size:.68rem;font-family:monospace;
+  color:rgba(255,255,255,.65);display:flex;align-items:center;gap:.4rem;
+  transition:all .12s;background:rgba(255,255,255,.03);
+}
+.zp-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.zp-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.zp-cancel{
+  margin-top:.4rem;width:100%;padding:.3rem;font-size:.62rem;
+  font-family:monospace;color:rgba(255,255,255,.25);background:none;
+  border:none;cursor:pointer;letter-spacing:.06em;
+}
+.zp-cancel:hover{color:rgba(255,255,255,.5)}
+
+#rain-btn{
+  position:absolute;bottom:32px;right:16px;z-index:1000;
+  padding:.45rem .75rem;font-size:.62rem;font-family:monospace;
+  letter-spacing:.06em;background:rgba(4,14,8,.82);backdrop-filter:blur(10px);
+  border:1px solid rgba(100,180,255,.3);border-radius:4px;
+  color:rgba(100,180,255,.7);cursor:pointer;transition:all .15s;
+}
+#rain-btn:hover{border-color:rgba(100,180,255,.6);color:rgba(100,180,255,1)}
+
+/* Pulse animation for REPLACE markers */
+@keyframes pulse-red{
+  0%{box-shadow:0 0 0 0 rgba(229,57,53,.7)}
+  70%{box-shadow:0 0 0 8px rgba(229,57,53,0)}
+  100%{box-shadow:0 0 0 0 rgba(229,57,53,0)}
+}
+.pad-marker-replace .pad-mk-inner{animation:pulse-red 1.6s infinite}
+
+/* Leaflet popup glass */
+#map .leaflet-popup-content-wrapper{
+  background:rgba(4,14,8,.9);backdrop-filter:blur(20px);
+  border:1px solid rgba(74,154,106,.2);border-top:2px solid var(--accent);
+  border-radius:4px;color:#d4f0de;min-width:200px;
+  box-shadow:0 0 20px rgba(74,154,106,.15),0 8px 32px rgba(0,0,0,.6);
+}
+#map .leaflet-popup-content{margin:12px 14px;line-height:1.7}
+#map .leaflet-popup-tip{background:rgba(4,14,8,.9);box-shadow:none}
+#map .leaflet-popup-close-button{color:rgba(74,154,106,.6)!important}
+
+/* placing cursor */
+#map.placing{cursor:crosshair!important}
+#map.placing .leaflet-interactive{cursor:crosshair!important}
+</style>
+</head>
+<body>
+<div id="wrapper">
+
+<!-- ═══ PANEL ═══ -->
+<div id="panel">
+  <div class="brand">
+    <h1>Cow<span>Pad</span> <sup>OPS</sup></h1>
+    <a class="switch-btn" href="cowpad_gis.html">◀ Research</a>
+  </div>
+
+  <div id="panel-scroll">
+
+    <!-- Farm selector -->
+    <div class="section">
+      <div class="slabel">Select farm</div>
+      <div id="farm-list"></div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="section">
+      <div class="slabel" style="display:flex;align-items:center">
+        Alerts<span id="alert-count" style="display:none">0</span>
+      </div>
+      <div id="alerts-list"><div class="alert-empty">No active alerts</div></div>
+    </div>
+
+    <!-- Pads -->
+    <div class="section" style="border-bottom:none;flex:1">
+      <div class="slabel" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Placed pads <span id="pad-count" style="color:rgba(255,255,255,.3)">0</span></span>
+        <span style="font-size:.58rem;color:rgba(255,255,255,.18);font-family:monospace">tap pad → fly to</span>
+      </div>
+      <div id="pads-list"><div class="pad-empty">No pads placed yet.<br>Select a farm → zoom in → Place CowPad</div></div>
+    </div>
+
+  </div><!-- /panel-scroll -->
+</div>
+
+<!-- ═══ MAP ═══ -->
+<div id="map-wrap">
+  <div id="map"></div>
+
+  <div id="zoom-hint">Zoom in to place pads (zoom 16+)</div>
+
+  <!-- Zone type picker (hidden until placement click) -->
+  <div id="zone-picker">
+    <div class="zp-title">Select zone type</div>
+    <div class="zp-grid">
+      <div class="zp-btn" onclick="confirmPlace('laneway')">
+        <span class="zp-dot" style="background:#e53935"></span>Laneway 通道
+      </div>
+      <div class="zp-btn" onclick="confirmPlace('holding')">
+        <span class="zp-dot" style="background:#ff7043"></span>Holding Yard
+      </div>
+      <div class="zp-btn" onclick="confirmPlace('shade')">
+        <span class="zp-dot" style="background:#ffc107"></span>Shade Area 遮阴
+      </div>
+      <div class="zp-btn" onclick="confirmPlace('trough')">
+        <span class="zp-dot" style="background:#4caf7d"></span>Trough 水槽
+      </div>
+    </div>
+    <button class="zp-cancel" onclick="cancelPicker()">Cancel</button>
+  </div>
+
+  <button id="place-btn" onclick="togglePlaceMode()">+ Place CowPad</button>
+  <button id="rain-btn" onclick="simulateRain()" title="Demo: simulate incoming rain forecast">🌧 Rain in 48h</button>
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+// ═══════════════════════════════════════
+// MAP INIT
+// ═══════════════════════════════════════
+const map = L.map('map', {
+  center: [-43.6397, 172.4558],
+  zoom: 15,
+  zoomControl: true
+});
+
+L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  {attribution:'Esri World Imagery', maxZoom:20}
+).addTo(map);
+
+setTimeout(() => map.invalidateSize(), 100);
+
+// ═══════════════════════════════════════
+// ZONE DEFINITIONS
+// ═══════════════════════════════════════
+const ZONES = {
+  laneway: { label:'Laneway 通道',    color:'#e53935', risk:'Highest N concentration' },
+  holding: { label:'Holding Yard',    color:'#ff7043', risk:'Very high — cows wait 30–60 min' },
+  shade:   { label:'Shade Area 遮阴', color:'#ffc107', risk:'Seasonal — summer congregation' },
+  trough:  { label:'Trough 水槽',     color:'#4caf7d', risk:'Point-source — CowPad V1 target' },
+};
+
+const STATUS_CYCLE = ['active','monitoring','replace','replaced'];
+const STATUS_META = {
+  active:     { label:'Active',       color:'#4caf7d', icon:'✓', desc:'<60% saturation' },
+  monitoring: { label:'Monitoring',   color:'#ffc107', icon:'◐', desc:'60–85% saturation' },
+  replace:    { label:'REPLACE NOW',  color:'#e53935', icon:'⚠', desc:'>85% — change cartridge' },
+  replaced:   { label:'Replaced',     color:'#64b4ff', icon:'↺', desc:'Collection scheduled' },
+};
+
+// ═══════════════════════════════════════
+// DEMO FARMS
+// ═══════════════════════════════════════
+// All farms from OpenStreetMap landuse=farmyard in Canterbury dairy belt
+// OSM data verified · Selwyn District high-risk zone · 2026
+const DEMO_FARMS = [
+  {
+    id:'f1',
+    name:'Lincoln University Research Dairy Farm',
+    area:'Lincoln · Selwyn',
+    lat:-43.6397, lng:172.4558,
+    cows:450, risk:'CRITICAL', riskScore:84,
+    desc:'OSM way 489498137 · Selwyn gravel · water table ~3m'
+  },
+  {
+    id:'f2',
+    name:'Springston Road Farm',
+    area:'Springston · Selwyn',
+    lat:-43.6613, lng:172.3687,
+    cows:520, risk:'CRITICAL', riskScore:79,
+    desc:'OSM farmyard · Selwyn gravel plain · high stocking'
+  },
+  {
+    id:'f3',
+    name:'Leeston Plains Farm',
+    area:'Leeston · Selwyn',
+    lat:-43.6632, lng:172.5015,
+    cows:390, risk:'HIGH', riskScore:71,
+    desc:'OSM farmyard · near Selwyn River · drainage risk'
+  },
+  {
+    id:'f4',
+    name:'Selwyn Plains East',
+    area:'Selwyn District',
+    lat:-43.6350, lng:172.5052,
+    cows:610, risk:'HIGH', riskScore:74,
+    desc:'OSM farmyard · flat plains · centre-pivot irrigated'
+  },
+  {
+    id:'f5',
+    name:'Methven South Farm',
+    area:'Methven · Mid Canterbury',
+    lat:-43.8460, lng:172.2162,
+    cows:340, risk:'MODERATE', riskScore:58,
+    desc:'OSM farmyard · Ashburton district · mixed terrain'
+  },
+  {
+    id:'f6',
+    name:'Rolleston Plains Farm',
+    area:'Rolleston · Selwyn',
+    lat:-43.5872, lng:172.3781,
+    cows:580, risk:'CRITICAL', riskScore:82,
+    desc:'OSM farmyard · Selwyn gravel · high water table proximity'
+  },
+  {
+    id:'f7',
+    name:'Doyleston Road Farm',
+    area:'Doyleston · Selwyn',
+    lat:-43.7018, lng:172.4361,
+    cows:460, risk:'HIGH', riskScore:73,
+    desc:'OSM farmyard · lower Selwyn plains · tile drain network'
+  },
+  {
+    id:'f8',
+    name:'Weedons North Farm',
+    area:'Weedons · Selwyn',
+    lat:-43.5991, lng:172.4124,
+    cows:510, risk:'HIGH', riskScore:76,
+    desc:'OSM farmyard · Canterbury Plains · centre-pivot irrigated'
+  },
+  {
+    id:'f9',
+    name:'Southbridge Dairy Farm',
+    area:'Southbridge · Selwyn',
+    lat:-43.8011, lng:172.2538,
+    cows:420, risk:'HIGH', riskScore:69,
+    desc:'OSM farmyard · near Lake Ellesmere · low-lying drainage risk'
+  },
+];
+
+// ═══════════════════════════════════════
+// PAD STATE
+// ═══════════════════════════════════════
+let pads = []; // all placed pads
+let padIdCounter = 1;
+let activeFarm = null;
+let placingMode = false;
+let pendingLatLng = null;
+
+// Pre-load demo pads on Farm 1
+// Pre-loaded demo pads on real Canterbury OSM farmyard locations
+// Canterbury dairy farm layout pattern:
+//   Dairy shed cluster → SE corner of paddock area
+//   Holding yard → hardstand immediately adjacent to milking parlour
+//   Main laneway → linear strip running N-S through farm centre (~4m wide)
+//   Cross laneway → E-W strip connecting paddock rows
+//   Troughs → circular bare congregation zones in paddock corners
+//
+// Offsets from farm centre (0.001° ≈ 111m N-S, 82m E-W at -43°):
+const DEMO_PADS = [
+
+  // ══ Farm 1: Lincoln University Research Dairy Farm ══
+  // Building cluster confirmed at -43.6394 to -43.6399, 172.4544–172.4565 (OSM)
+  { farmId:'f1', type:'holding', lat:-43.6400, lng:172.4562, saturation:91, status:'replace'    },
+  { farmId:'f1', type:'laneway', lat:-43.6383, lng:172.4556, saturation:74, status:'monitoring' },
+  { farmId:'f1', type:'laneway', lat:-43.6396, lng:172.4578, saturation:55, status:'active'     },
+  { farmId:'f1', type:'trough',  lat:-43.6371, lng:172.4545, saturation:41, status:'active'     },
+  { farmId:'f1', type:'trough',  lat:-43.6375, lng:172.4524, saturation:62, status:'monitoring' },
+
+  // ══ Farm 2: Springston Road Farm ══
+  // Dairy shed SE corner, main laneway runs N, trough in NW paddock
+  { farmId:'f2', type:'holding', lat:-43.6623, lng:172.3698, saturation:88, status:'replace'    },
+  { farmId:'f2', type:'laneway', lat:-43.6601, lng:172.3692, saturation:67, status:'monitoring' },
+  { farmId:'f2', type:'trough',  lat:-43.6595, lng:172.3672, saturation:33, status:'active'     },
+
+  // ══ Farm 3: Leeston Plains Farm ══
+  // Flat Selwyn plains layout, two laneways + holding yard
+  { farmId:'f3', type:'holding', lat:-43.6642, lng:172.5026, saturation:45, status:'active'     },
+  { farmId:'f3', type:'laneway', lat:-43.6620, lng:172.5019, saturation:71, status:'monitoring' },
+  { farmId:'f3', type:'trough',  lat:-43.6614, lng:172.5038, saturation:28, status:'active'     },
+
+  // ══ Farm 4: Selwyn Plains East ══
+  // Centre-pivot farm — troughs at pivot corners, long laneway
+  { farmId:'f4', type:'laneway', lat:-43.6332, lng:172.5047, saturation:82, status:'replace'    },
+  { farmId:'f4', type:'trough',  lat:-43.6318, lng:172.5063, saturation:55, status:'active'     },
+  { farmId:'f4', type:'trough',  lat:-43.6341, lng:172.5071, saturation:44, status:'active'     },
+  { farmId:'f4', type:'shade',   lat:-43.6362, lng:172.5035, saturation:38, status:'active'     },
+
+  // ══ Farm 5: Methven South Farm ══
+  // Smaller farm, lower risk, standard layout
+  { farmId:'f5', type:'trough',  lat:-43.8448, lng:172.2170, saturation:29, status:'active'     },
+  { farmId:'f5', type:'laneway', lat:-43.8455, lng:172.2155, saturation:48, status:'active'     },
+
+  // ══ Farm 6: Rolleston Plains Farm ══
+  // High-density Selwyn gravel zone — fast N leach risk, large herd
+  { farmId:'f6', type:'holding', lat:-43.5882, lng:172.3791, saturation:93, status:'replace'    },
+  { farmId:'f6', type:'laneway', lat:-43.5862, lng:172.3785, saturation:78, status:'monitoring' },
+  { farmId:'f6', type:'laneway', lat:-43.5852, lng:172.3778, saturation:61, status:'monitoring' },
+  { farmId:'f6', type:'trough',  lat:-43.5843, lng:172.3798, saturation:39, status:'active'     },
+
+  // ══ Farm 7: Doyleston Road Farm ══
+  // Tile drain network — N moves laterally under paddock
+  { farmId:'f7', type:'holding', lat:-43.7028, lng:172.4372, saturation:55, status:'active'     },
+  { farmId:'f7', type:'laneway', lat:-43.7008, lng:172.4365, saturation:84, status:'replace'    },
+  { farmId:'f7', type:'trough',  lat:-43.7001, lng:172.4348, saturation:42, status:'active'     },
+  { farmId:'f7', type:'shade',   lat:-43.7024, lng:172.4340, saturation:31, status:'active'     },
+
+  // ══ Farm 8: Weedons North Farm ══
+  // Centre-pivot with troughs at paddock corners
+  { farmId:'f8', type:'holding', lat:-43.6001, lng:172.4135, saturation:67, status:'monitoring' },
+  { farmId:'f8', type:'laneway', lat:-43.5981, lng:172.4128, saturation:44, status:'active'     },
+  { farmId:'f8', type:'trough',  lat:-43.5974, lng:172.4112, saturation:76, status:'monitoring' },
+
+  // ══ Farm 9: Southbridge Dairy Farm ══
+  // Lake Ellesmere catchment — environmental compliance pressure
+  { farmId:'f9', type:'holding', lat:-43.8021, lng:172.2549, saturation:71, status:'monitoring' },
+  { farmId:'f9', type:'laneway', lat:-43.8001, lng:172.2541, saturation:53, status:'active'     },
+  { farmId:'f9', type:'trough',  lat:-43.7994, lng:172.2526, saturation:35, status:'active'     },
+];
+
+// ═══════════════════════════════════════
+// MARKER ICON
+// ═══════════════════════════════════════
+function makePadIcon(type, status, saturation) {
+  const z = ZONES[type];
+  const s = STATUS_META[status];
+  const showSat = (status === 'monitoring' || status === 'replace');
+  const pulse = status === 'replace' ? 'pad-marker-replace' : '';
+  const satText = showSat ? `<div style="font-size:9px;color:${s.color};line-height:1">${saturation}%</div>` : '';
+  return L.divIcon({
+    html: `<div class="${pulse}" style="position:relative">
+      <div class="pad-mk-inner" style="
+        width:28px;height:28px;border-radius:4px;
+        background:${z.color}22;border:2px solid ${z.color};
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        box-shadow:0 2px 8px ${z.color}44;
+        font-size:12px;color:${s.color};font-weight:700;line-height:1;
+      ">${s.icon}${satText}</div>
+    </div>`,
+    className: '',
+    iconAnchor: [14, 14],
+    iconSize: [28, 28],
+  });
+}
+
+// ═══════════════════════════════════════
+// ADD PAD
+// ═══════════════════════════════════════
+function addPad(lat, lng, type, farmId, saturation, status) {
+  const id = 'PAD-' + String(padIdCounter++).padStart(3,'0');
+  const zone = ZONES[type];
+  const pad = {
+    id, farmId, type, lat, lng,
+    saturation: saturation || Math.floor(Math.random()*40 + 10),
+    status: status || 'active',
+    placed: new Date(),
+  };
+
+  const marker = L.marker([lat, lng], { icon: makePadIcon(type, pad.status, pad.saturation) })
+    .addTo(map);
+
+  marker.bindPopup(buildPopupHTML(pad), {maxWidth:240});
+  marker.on('click', () => {
+    marker.openPopup();
+    map.panTo([lat, lng]);
+  });
+
+  pad.marker = marker;
+  pads.push(pad);
+  renderPadList();
+  renderAlerts();
+  return pad;
+}
+
+function buildPopupHTML(pad) {
+  const z = ZONES[pad.type];
+  const s = STATUS_META[pad.status];
+  const farm = DEMO_FARMS.find(f => f.id === pad.farmId);
+  return `
+    <div style="font-size:.72rem;font-family:monospace;line-height:1.9">
+      <div style="color:#fff;font-weight:700;font-size:.8rem;margin-bottom:2px">${pad.id}</div>
+      <div style="color:${z.color};font-size:.65rem;margin-bottom:.4rem">${z.label} · ${z.risk}</div>
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07);padding:.15rem 0">
+        <span style="color:rgba(255,255,255,.4)">Status</span>
+        <strong style="color:${s.color}">${s.label}</strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07);padding:.15rem 0">
+        <span style="color:rgba(255,255,255,.4)">Saturation</span>
+        <strong style="color:var(--amber)">${pad.saturation}%</strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:.15rem 0">
+        <span style="color:rgba(255,255,255,.4)">Farm</span>
+        <span style="color:rgba(255,255,255,.6)">${farm ? farm.name : '—'}</span>
+      </div>
+      <div style="margin-top:.5rem;display:flex;gap:.4rem">
+        <button onclick="cyclePadStatus('${pad.id}')" style="flex:1;padding:.3rem;font-size:.62rem;font-family:monospace;background:rgba(74,154,106,.15);border:1px solid rgba(74,154,106,.35);border-radius:3px;color:rgba(255,255,255,.65);cursor:pointer">Cycle status →</button>
+        <button onclick="removePad('${pad.id}')" style="padding:.3rem .6rem;font-size:.62rem;font-family:monospace;background:rgba(229,57,53,.1);border:1px solid rgba(229,57,53,.3);border-radius:3px;color:#ff8a80;cursor:pointer">Remove</button>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// PAD MANAGEMENT
+// ═══════════════════════════════════════
+function cyclePadStatus(id) {
+  const pad = pads.find(p => p.id === id);
+  if (!pad) return;
+  const idx = STATUS_CYCLE.indexOf(pad.status);
+  pad.status = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
+  if (pad.status === 'monitoring') pad.saturation = Math.max(pad.saturation, 62);
+  if (pad.status === 'replace')    pad.saturation = Math.max(pad.saturation, 86);
+  if (pad.status === 'replaced')   pad.saturation = 100;
+  if (pad.status === 'active')     pad.saturation = Math.floor(Math.random()*35 + 5);
+  pad.marker.setIcon(makePadIcon(pad.type, pad.status, pad.saturation));
+  pad.marker.setPopupContent(buildPopupHTML(pad));
+  renderPadList();
+  renderAlerts();
+}
+
+function removePad(id) {
+  const idx = pads.findIndex(p => p.id === id);
+  if (idx < 0) return;
+  map.removeLayer(pads[idx].marker);
+  pads.splice(idx, 1);
+  renderPadList();
+  renderAlerts();
+  map.closePopup();
+}
+
+function flyToPad(id) {
+  const pad = pads.find(p => p.id === id);
+  if (!pad) return;
+  map.flyTo([pad.lat, pad.lng], 18, {duration:1.0});
+  setTimeout(() => pad.marker.openPopup(), 1100);
+}
+
+// ═══════════════════════════════════════
+// PLACEMENT MODE
+// ═══════════════════════════════════════
+function togglePlaceMode() {
+  placingMode = !placingMode;
+  const btn = document.getElementById('place-btn');
+  const mapEl = document.getElementById('map');
+  if (placingMode) {
+    btn.textContent = '✕ Cancel';
+    btn.classList.add('active');
+    mapEl.classList.add('placing');
+  } else {
+    btn.textContent = '+ Place CowPad';
+    btn.classList.remove('active');
+    mapEl.classList.remove('placing');
+    hidePicker();
+  }
+}
+
+map.on('click', function(e) {
+  if (!placingMode) return;
+  if (!activeFarm) { alert('Select a farm first'); return; }
+  if (map.getZoom() < 15) {
+    document.getElementById('zoom-hint').style.display = 'block';
+    setTimeout(() => document.getElementById('zoom-hint').style.display = 'none', 2000);
+    return;
+  }
+  pendingLatLng = e.latlng;
+  showPicker(e.containerPoint);
+});
+
+function showPicker(point) {
+  const picker = document.getElementById('zone-picker');
+  picker.style.display = 'block';
+  const mapEl = document.getElementById('map');
+  const rect = mapEl.getBoundingClientRect();
+  let left = point.x + 12;
+  let top = point.y - 20;
+  if (left + 220 > rect.width) left = point.x - 230;
+  if (top + 180 > rect.height) top = rect.height - 190;
+  picker.style.left = left + 'px';
+  picker.style.top = top + 'px';
+}
+
+function hidePicker() {
+  document.getElementById('zone-picker').style.display = 'none';
+  pendingLatLng = null;
+}
+
+function cancelPicker() { hidePicker(); }
+
+function confirmPlace(type) {
+  if (!pendingLatLng || !activeFarm) { hidePicker(); return; }
+  addPad(pendingLatLng.lat, pendingLatLng.lng, type, activeFarm.id);
+  hidePicker();
+}
+
+// ═══════════════════════════════════════
+// FARM SELECTOR
+// ═══════════════════════════════════════
+function renderFarmList() {
+  const el = document.getElementById('farm-list');
+  el.innerHTML = DEMO_FARMS.map(f => `
+    <div class="farm-card${activeFarm && activeFarm.id===f.id?' active':''}" onclick="selectFarm('${f.id}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.25rem">
+        <div class="farm-name">${f.name}</div>
+        <span class="risk-badge risk-${f.risk.toLowerCase()}">${f.risk}</span>
+      </div>
+      <div class="farm-meta">
+        ${f.area} · ${f.cows} cows · Risk ${f.riskScore}%<br>
+        <span style="color:rgba(255,255,255,.2)">${f.desc}</span>
+      </div>
+    </div>`).join('');
+}
+
+function selectFarm(id) {
+  activeFarm = DEMO_FARMS.find(f => f.id === id);
+  if (!activeFarm) return;
+  renderFarmList();
+  map.flyTo([activeFarm.lat, activeFarm.lng], 18, {duration:1.3, easeLinearity:0.4});
+}
+
+// ═══════════════════════════════════════
+// RENDER PAD LIST
+// ═══════════════════════════════════════
+function renderPadList() {
+  const el = document.getElementById('pads-list');
+  const countEl = document.getElementById('pad-count');
+  countEl.textContent = pads.length;
+  if (pads.length === 0) {
+    el.innerHTML = '<div class="pad-empty">No pads placed yet.<br>Select a farm → zoom in → Place CowPad</div>';
+    return;
+  }
+  el.innerHTML = pads.map(p => {
+    const z = ZONES[p.type];
+    const s = STATUS_META[p.status];
+    const satColor = p.saturation > 85 ? '#e53935' : p.saturation > 60 ? '#ffc107' : '#4caf7d';
+    return `
+      <div class="pad-item" onclick="flyToPad('${p.id}')">
+        <div class="pad-icon" style="background:${z.color}22;border:1.5px solid ${z.color}">
+          <span style="color:${s.color}">${s.icon}</span>
+        </div>
+        <div class="pad-info">
+          <div class="pad-name">${p.id} · ${z.label}</div>
+          <div class="pad-status" style="color:${s.color}">${s.label} · ${p.saturation}%</div>
+          <div class="sat-bar"><div class="sat-fill" style="width:${p.saturation}%;background:${satColor}"></div></div>
+        </div>
+        <div class="pad-actions">
+          <div class="pad-btn pad-btn-cycle" onclick="event.stopPropagation();cyclePadStatus('${p.id}')">→</div>
+          <div class="pad-btn pad-btn-del" onclick="event.stopPropagation();removePad('${p.id}')">✕</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// ALERTS
+// ═══════════════════════════════════════
+function renderAlerts() {
+  const replacePads = pads.filter(p => p.status === 'replace');
+  const countEl = document.getElementById('alert-count');
+  const listEl = document.getElementById('alerts-list');
+  if (replacePads.length === 0) {
+    countEl.style.display = 'none';
+    listEl.innerHTML = '<div class="alert-empty">No active alerts</div>';
+    return;
+  }
+  countEl.style.display = 'flex';
+  countEl.textContent = replacePads.length;
+  listEl.innerHTML = replacePads.map(p => {
+    const z = ZONES[p.type];
+    const farm = DEMO_FARMS.find(f => f.id === p.farmId);
+    return `
+      <div class="alert-item" onclick="flyToPad('${p.id}')">
+        <div class="alert-title">⚠ ${p.id} · ${z.label}</div>
+        <div class="alert-desc">
+          ${farm ? farm.name : '—'} · Saturation ${p.saturation}%<br>
+          Replace cartridge — N loading into soil
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// SIMULATE RAIN (demo feature)
+// ═══════════════════════════════════════
+function simulateRain() {
+  // Pads at monitoring level (>60%) immediately become REPLACE under rain
+  let triggered = 0;
+  pads.forEach(p => {
+    if (p.status === 'monitoring' || (p.status === 'active' && p.saturation > 50)) {
+      p.status = 'replace';
+      p.saturation = Math.min(p.saturation + 15, 99);
+      p.marker.setIcon(makePadIcon(p.type, p.status, p.saturation));
+      p.marker.setPopupContent(buildPopupHTML(p));
+      triggered++;
+    }
+  });
+  renderPadList();
+  renderAlerts();
+  const btn = document.getElementById('rain-btn');
+  btn.textContent = `⚠ ${triggered} pads triggered`;
+  btn.style.borderColor = 'rgba(229,57,53,.6)';
+  btn.style.color = '#ff8a80';
+  setTimeout(() => {
+    btn.textContent = '🌧 Rain in 48h';
+    btn.style.borderColor = 'rgba(100,180,255,.3)';
+    btn.style.color = 'rgba(100,180,255,.7)';
+  }, 4000);
+}
+
+// ═══════════════════════════════════════
+// LIVE SATURATION SIMULATION
+// IoT sensor: every 12s, active pads increment
+// ═══════════════════════════════════════
+setInterval(() => {
+  let changed = false;
+  pads.forEach(p => {
+    if (p.status === 'active' || p.status === 'monitoring') {
+      p.saturation = Math.min(p.saturation + Math.floor(Math.random()*2 + 1), 100);
+      if (p.saturation >= 86 && p.status !== 'replace') {
+        p.status = 'replace';
+      } else if (p.saturation >= 62 && p.status === 'active') {
+        p.status = 'monitoring';
+      }
+      p.marker.setIcon(makePadIcon(p.type, p.status, p.saturation));
+      changed = true;
+    }
+  });
+  if (changed) { renderPadList(); renderAlerts(); }
+}, 12000);
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+renderFarmList();
+
+// Load demo pads
+DEMO_PADS.forEach(d => addPad(d.lat, d.lng, d.type, d.farmId, d.saturation, d.status));
+
+// Auto-select first farm
+selectFarm('f1');
+</script>
+</body>
+</html>

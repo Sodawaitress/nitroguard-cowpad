@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CowPad Configurator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: #F4F6F5; color: #1A2820; display: flex; height: 100vh; overflow: hidden; }
+
+  #ui {
+    width: 290px; min-width: 290px;
+    background: #FFFFFF;
+    border-right: 1px solid #C8D5CC;
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+  }
+  .ui-header { padding: 18px 20px 12px; border-bottom: 1px solid #C8D5CC; }
+  .ui-header h1 { font-size: 15px; font-weight: bold; color: #1A2820; }
+    .ui-header p { font-size: 10px; color: #587068; margin-top: 3px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .tabs { display: flex; border-bottom: 1px solid #C8D5CC; }
+  .tab {
+    flex: 1; padding: 10px 6px; font-size: 10px; text-align: center;
+    letter-spacing: 0.8px; text-transform: uppercase; color: #8AA898;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .tab.active { color: #9A5F00; border-bottom-color: #9A5F00; }
+
+  .panel { display: none; flex-direction: column; }
+  .panel.active { display: flex; }
+
+  .section { padding: 14px 20px; border-bottom: 1px solid #E2EBE6; }
+  .section-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #8AA898; margin-bottom: 10px; }
+
+  select {
+    width: 100%; background: #F4F6F5; color: #1A2820;
+    border: 1px solid #C8D5CC; border-radius: 4px;
+    padding: 7px 10px; font-size: 12px;
+    font-family: 'Georgia', serif; margin-bottom: 8px; cursor: pointer;
+  }
+  .trough-info {
+    background: #F4F6F5; border-radius: 4px; padding: 10px 12px;
+    font-size: 11px; color: #587068; line-height: 1.9; margin-top: 2px;
+  }
+  .trough-info strong { color: #9A5F00; }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .toggle-label { font-size: 12px; color: #1A2820; }
+  .toggle {
+    width: 36px; height: 20px; background: #C8D5CC; border-radius: 10px;
+    cursor: pointer; position: relative; transition: background 0.2s; border: none;
+  }
+  .toggle.on { background: #9A5F00; }
+  .toggle::after {
+    content: ''; position: absolute; width: 14px; height: 14px; background: #fff;
+    border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s;
+  }
+  .toggle.on::after { transform: translateX(16px); }
+
+  .slider-row { margin-bottom: 12px; }
+  .slider-header { display: flex; justify-content: space-between; font-size: 11px; color: #587068; margin-bottom: 5px; }
+  input[type=range] {
+    width: 100%; height: 4px; accent-color: #c8a96e;
+    background: #C8D5CC; border: none; border-radius: 2px; cursor: pointer;
+  }
+
+  .btn {
+    width: 100%; padding: 9px; border: 1px solid #9A5F00; background: transparent;
+    color: #9A5F00; font-size: 11px; font-family: 'Georgia', serif;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+    border-radius: 3px; margin-bottom: 6px; transition: background 0.15s;
+  }
+  .btn:hover { background: #c8a96e22; }
+  .btn.primary { background: #9A5F00; color: #FFFFFF; font-weight: bold; }
+  .btn.primary:hover { background: #B07000; }
+
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { background: #F4F6F5; border-radius: 4px; padding: 8px 10px; text-align: center; }
+  .stat-val { font-size: 15px; font-weight: bold; color: #9A5F00; }
+  .stat-key { font-size: 9px; color: #6b7280; margin-top: 2px; }
+
+  /* Parts panel */
+  .part-list { display: flex; flex-direction: column; gap: 8px; padding: 14px 20px; }
+  .part-item {
+    background: #F4F6F5; border-radius: 5px; padding: 10px 12px;
+    border-left: 3px solid #c8a96e; cursor: pointer; transition: border-color 0.15s;
+  }
+  .part-item:hover { border-color: #f0ebe0; }
+  .part-item.selected { border-color: #27ae60; background: #0a1f10; }
+  .part-name { font-size: 12px; font-weight: bold; color: #e6e1d5; }
+  .part-dim { font-size: 10px; color: #6b7280; margin-top: 3px; }
+  .part-desc { font-size: 10px; color: #9ca3af; margin-top: 4px; line-height: 1.6; }
+  .part-badge {
+    display: inline-block; font-size: 9px; padding: 2px 6px;
+    border-radius: 10px; margin-top: 5px; letter-spacing: 0.5px;
+  }
+  .badge-shell { background: #1a2f3a; color: #8ab4f8; }
+  .badge-fill  { background: #1a2a1a; color: #6fcf97; }
+  .badge-conn  { background: #2a1f10; color: #c8a96e; }
+
+  .kit-box {
+    margin: 14px 20px 0; background: #F4F6F5; border-radius: 5px; padding: 12px;
+    border: 1px solid #2a2f38;
+  }
+  .kit-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 8px; }
+  .kit-row { display: flex; justify-content: space-between; font-size: 11px; color: #9ca3af; padding: 3px 0; border-bottom: 1px solid #1e242e; }
+  .kit-row:last-child { border-bottom: none; }
+  .kit-qty { color: #c8a96e; font-weight: bold; }
+
+  .sensor-legend { padding: 14px 20px; }
+  .s-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #9ca3af; margin-bottom: 7px; }
+  .s-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  #canvas-wrap { flex: 1; position: relative; }
+  #canvas-wrap canvas { display: block; }
+  #overlay { position: absolute; bottom: 16px; left: 16px; font-size: 10px; color: #3a4048; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div id="ui">
+  <div class="ui-header">
+    <h1>CowPad Configurator</h1>
+    <p>Modular · Lego-style · Biochar system</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('configure')">Configure</div>
+    <div class="tab" onclick="switchTab('parts')">Parts Kit</div>
+    <div class="tab" onclick="switchTab('simulate')">Simulate</div>
+  </div>
+
+  <!-- CONFIGURE PANEL -->
+  <div class="panel active" id="panel-configure">
+
+    <div class="section">
+      <div class="section-label">Trough Model</div>
+      <select id="trough-select" onchange="onTroughChange(this.value)">
+        <optgroup label="Hynds Round (Pinnacle)">
+          <option value="round_1100">Round 1100L · ⌀1750 × 645mm</option>
+          <option value="round_750">Round 750L · ⌀1750 × 486mm</option>
+          <option value="round_515">Round 515L · ⌀1600 × 426mm</option>
+        </optgroup>
+        <optgroup label="Rectangular">
+          <option value="rect_large">Rectangular Large · 2400 × 600mm</option>
+          <option value="rect_medium">Rectangular Medium · 1800 × 500mm</option>
+        </optgroup>
+        <optgroup label="Portable">
+          <option value="portable">Portable · ⌀900 × 300mm</option>
+        </optgroup>
+      </select>
+      <div class="trough-info" id="trough-info"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Pad Settings</div>
+      <div class="slider-row">
+        <div class="slider-header"><span>Pad Width</span><span id="v-width">600 mm</span></div>
+        <input type="range" min="300" max="900" value="600" step="50" oninput="onWidth(this.value)">
+      </div>
+      <div class="slider-row">
+        <div class="slider-header"><span>Thickness</span><span id="v-thick">50 mm</span></div>
+        <input type="range" min="30" max="80" value="50" step="5" oninput="onThick(this.value)">
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Show channels</span>
+        <button class="toggle on" id="t-chan" onclick="toggleChannels()"></button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Explode parts</span>
+        <button class="toggle" id="t-exp" onclick="toggleExplode()"></button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Camera</div>
+      <button class="btn" onclick="setView('top')">Top view</button>
+      <button class="btn" onclick="setView('iso')">Isometric</button>
+      <button class="btn" onclick="setView('side')">Side view</button>
+      <button class="btn primary" onclick="resetView()">Reset</button>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Stats</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-val" id="s-parts">—</div><div class="stat-key">Parts total</div></div>
+        <div class="stat"><div class="stat-val" id="s-area">—</div><div class="stat-key">Area m²</div></div>
+        <div class="stat"><div class="stat-val" id="s-biochar">—</div><div class="stat-key">Biochar</div></div>
+        <div class="stat"><div class="stat-val" id="s-nred">—</div><div class="stat-key">N reduction</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PARTS PANEL -->
+  <div class="panel" id="panel-parts">
+
+    <div class="part-list">
+
+      <div class="part-item selected" onclick="highlightPart('arc')" id="pi-arc">
+        <div class="part-name">Part 1 — Arc Tile</div>
+        <div class="part-dim">45° sector · inner r adaptable · depth: configurable</div>
+        <div class="part-desc">Used in ring configuration around round troughs. 8 tiles = full ring. Inner radius clip adapts to trough size.</div>
+        <span class="part-badge badge-shell">structural shell</span>
+      </div>
+
+      <div class="part-item" onclick="highlightPart('straight')" id="pi-straight">
+        <div class="part-name">Part 2 — Straight Tile</div>
+        <div class="part-dim">600 × 600mm · connects end-to-end</div>
+        <div class="part-desc">Used along the long sides of rectangular troughs. Chain as many as needed to match trough length.</div>
+        <span class="part-badge badge-shell">structural shell</span>
+      </div>
+
+      <div class="part-item" onclick="highlightPart('corner')" id="pi-corner">
+        <div class="part-name">Part 3 — Corner Tile</div>
+        <div class="part-dim">L-shape · 600 × 600mm arms · 90°</div>
+        <div class="part-desc">Sits at the corners of rectangular troughs. Diagonal internal ribs handle concentrated corner load.</div>
+        <span class="part-badge badge-shell">structural shell</span>
+      </div>
+
+      <div class="part-item" onclick="highlightPart('cartridge')" id="pi-cartridge">
+        <div class="part-name">Part 4 — Biochar Cartridge</div>
+        <div class="part-dim">Fits all tile types · replaceable</div>
+        <div class="part-desc">Biochar fill layer in a biodegradable tray. Snaps into any tile. When saturated: pull out, replace. Return saturated cartridge for N fertiliser processing.</div>
+        <span class="part-badge badge-fill">replaceable fill</span>
+      </div>
+
+      <div class="part-item" onclick="highlightPart('clip')" id="pi-clip">
+        <div class="part-name">Part 5 — Universal Clip</div>
+        <div class="part-dim">Quarter-turn bayonet · same on all edges</div>
+        <div class="part-desc">One standardised connector used on every tile edge. Allows arc-to-arc, straight-to-straight, and arc-to-straight joins. Tolerates ±10° angle.</div>
+        <span class="part-badge badge-conn">connector</span>
+      </div>
+
+    </div>
+
+    <div class="kit-box" id="kit-box">
+      <div class="kit-title">Kit required — Round 1100L</div>
+      <div class="kit-row"><span>Arc Tiles (Part 1)</span><span class="kit-qty" id="k-arc">8×</span></div>
+      <div class="kit-row"><span>Straight Tiles (Part 2)</span><span class="kit-qty" id="k-str">0×</span></div>
+      <div class="kit-row"><span>Corner Tiles (Part 3)</span><span class="kit-qty" id="k-cor">0×</span></div>
+      <div class="kit-row"><span>Biochar Cartridges (Part 4)</span><span class="kit-qty" id="k-bio">8×</span></div>
+      <div class="kit-row"><span>Universal Clips (Part 5)</span><span class="kit-qty" id="k-clip">16×</span></div>
+    </div>
+
+  </div>
+
+  <!-- SIMULATE PANEL -->
+  <div class="panel" id="panel-simulate">
+
+    <div class="section">
+      <div class="section-label">Nitrogen Load</div>
+      <div class="slider-row">
+        <div class="slider-header"><span>Saturation %</span><span id="v-nload">20%</span></div>
+        <input type="range" min="0" max="100" value="20" step="5" oninput="onNLoad(this.value)">
+      </div>
+    </div>
+
+    <div class="sensor-legend">
+      <div class="section-label">Cartridge Status</div>
+      <div class="s-row"><div class="s-dot" style="background:#4a9a6a"></div>0–60% — Absorbing actively</div>
+      <div class="s-row"><div class="s-dot" style="background:#d4851a"></div>60–85% — Nearing capacity</div>
+      <div class="s-row"><div class="s-dot" style="background:#c0392b"></div>85–100% — Replace now</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Herd Parameters</div>
+      <div class="slider-row">
+        <div class="slider-header"><span>Herd size</span><span id="v-herd">80 cows</span></div>
+        <input type="range" min="20" max="400" value="80" step="10" oninput="onHerd(this.value)">
+      </div>
+      <div style="background:#0d1117; border-radius:4px; padding:10px 12px; font-size:11px; color:#9ca3af; line-height:1.9; margin-top:4px;">
+        Avg urine events near trough: <strong style="color:#c8a96e">~3/day/cow</strong><br>
+        Avg urine volume: <strong style="color:#c8a96e">~2 L/event</strong><br>
+        N concentration: <strong style="color:#c8a96e">~8 g/L</strong><br>
+        Est. replacement: <strong style="color:#c8a96e" id="est-days">—</strong>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Replace all cartridges</div>
+      <button class="btn primary" onclick="resetSaturation()">↺ Replace &amp; Reset</button>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="canvas-wrap">
+  <div id="overlay">Drag · Scroll to zoom · Right-drag to pan</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ── Scene ──────────────────────────────────────────────────────────────────
+const wrap = document.getElementById('canvas-wrap');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.shadowMap.enabled = true;
+wrap.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0d1117);
+scene.fog = new THREE.Fog(0x0d1117, 10, 22);
+
+const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 50);
+camera.position.set(3, 2.5, 3);
+
+const ambient = new THREE.AmbientLight(0xffffff, 0.45);
+scene.add(ambient);
+const sun = new THREE.DirectionalLight(0xfff8e8, 1.1);
+sun.position.set(4, 7, 3);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x8ab4f8, 0.25);
+fill.position.set(-3, 2, -2);
+scene.add(fill);
+
+scene.add(new THREE.GridHelper(12, 48, 0x1e242e, 0x181d24));
+
+// ── Orbit ──────────────────────────────────────────────────────────────────
+let drag = false, rightDrag = false;
+let prev = { x: 0, y: 0 };
+let sph = { t: Math.PI / 4, p: Math.PI / 3.5, r: 4.5 };
+let panTarget = new THREE.Vector3(), panCur = new THREE.Vector3();
+
+renderer.domElement.addEventListener('mousedown', e => { drag = true; rightDrag = e.button === 2; prev = { x: e.clientX, y: e.clientY }; e.preventDefault(); });
+renderer.domElement.addEventListener('contextmenu', e => e.preventDefault());
+window.addEventListener('mouseup', () => { drag = false; });
+window.addEventListener('mousemove', e => {
+  if (!drag) return;
+  const dx = (e.clientX - prev.x) * 0.01, dy = (e.clientY - prev.y) * 0.01;
+  if (rightDrag) {
+    const right = new THREE.Vector3();
+    right.crossVectors(camera.getWorldDirection(new THREE.Vector3()), new THREE.Vector3(0,1,0)).normalize();
+    panTarget.addScaledVector(right, -dx * sph.r * 0.5);
+    panTarget.y += dy * sph.r * 0.5;
+  } else {
+    sph.t -= dx;
+    sph.p = Math.max(0.08, Math.min(Math.PI / 2.05, sph.p - dy));
+  }
+  prev = { x: e.clientX, y: e.clientY };
+});
+renderer.domElement.addEventListener('wheel', e => { sph.r = Math.max(1, Math.min(14, sph.r + e.deltaY * 0.003)); e.preventDefault(); }, { passive: false });
+
+// ── Trough Data ────────────────────────────────────────────────────────────
+const TROUGHS = {
+  round_1100: { type:'round', r:0.875, h:0.645, info:'<strong>Hynds Pinnacle 1100L</strong><br>Diameter: 1750 mm · Depth: 645 mm<br>Base: flush concrete pad · 1100 L' },
+  round_750:  { type:'round', r:0.875, h:0.486, info:'<strong>Hynds Pinnacle 750L</strong><br>Diameter: 1750 mm · Depth: 486 mm<br>Base: flush concrete pad · 750 L' },
+  round_515:  { type:'round', r:0.800, h:0.426, info:'<strong>Hynds Pinnacle 515L</strong><br>Diameter: 1600 mm · Depth: 426 mm<br>Base: flush concrete pad · 515 L' },
+  rect_large: { type:'rect', w:2.4, d:0.6, h:0.55, info:'<strong>Rectangular Large</strong><br>2400 × 600 mm · Depth: 550 mm · ~800 L' },
+  rect_medium:{ type:'rect', w:1.8, d:0.5, h:0.45, info:'<strong>Rectangular Medium</strong><br>1800 × 500 mm · Depth: 450 mm · ~400 L' },
+  portable:   { type:'round', r:0.45, h:0.30, info:'<strong>Portable Ball-cock</strong><br>Diameter: 900 mm · Depth: 300 mm<br>Skid mount · moveable · ~90 L' },
+};
+
+// ── State ──────────────────────────────────────────────────────────────────
+let currentKey = 'round_1100';
+let padWidth = 0.6, padThick = 0.05;
+let showChannels = true, exploded = false;
+let nLoad = 20, herdSize = 80;
+let highlightedPart = 'arc';
+
+// Per-module saturation (for simulate)
+let moduleSat = [];
+
+const troughGroup = new THREE.Group();
+const padGroup    = new THREE.Group();
+const chanGroup   = new THREE.Group();
+const groundGroup = new THREE.Group();
+scene.add(troughGroup, padGroup, chanGroup, groundGroup);
+
+// ── Materials ──────────────────────────────────────────────────────────────
+const matTrough  = new THREE.MeshLambertMaterial({ color: 0x7a8a9a, transparent:true, opacity:0.82 });
+const matWater   = new THREE.MeshLambertMaterial({ color: 0x2e86ab, transparent:true, opacity:0.55 });
+const matRim     = new THREE.MeshLambertMaterial({ color: 0x5a6a7a });
+const matGround  = new THREE.MeshLambertMaterial({ color: 0x1e2a14 });
+const matChannel = new THREE.LineBasicMaterial({ color: 0x4a3a1a });
+const matClip    = new THREE.MeshLambertMaterial({ color: 0xc8a96e });
+const matCartGlow= new THREE.MeshLambertMaterial({ color: 0x2a4a2a });
+
+function padColor(sat) {
+  if (sat < 60)  return new THREE.Color(0x8a7040);
+  if (sat < 85)  return new THREE.Color(0xc47820);
+  return new THREE.Color(0xb03020);
+}
+function hlColor(sat) {
+  if (sat < 60)  return new THREE.Color(0xc8f080);
+  if (sat < 85)  return new THREE.Color(0xffcc44);
+  return new THREE.Color(0xff5544);
+}
+
+// ── Geometry helpers ───────────────────────────────────────────────────────
+function wedgeShape(iR, oR, a0, a1, segs=24) {
+  const s = new THREE.Shape();
+  s.moveTo(Math.cos(a0)*iR, Math.sin(a0)*iR);
+  for (let i=0; i<=segs; i++) { const a=a0+(a1-a0)*i/segs; s.lineTo(Math.cos(a)*oR, Math.sin(a)*oR); }
+  for (let i=segs; i>=0; i--) { const a=a0+(a1-a0)*i/segs; s.lineTo(Math.cos(a)*iR, Math.sin(a)*iR); }
+  s.closePath();
+  return s;
+}
+
+function makeClip(x, z, ry) {
+  const g = new THREE.BoxGeometry(0.04, padThick*0.6, 0.015);
+  const m = new THREE.Mesh(g, matClip);
+  m.position.set(x, padThick*0.7, z);
+  m.rotation.y = ry;
+  return m;
+}
+
+// ── Build trough ───────────────────────────────────────────────────────────
+function buildTrough(key) {
+  troughGroup.clear();
+  const t = TROUGHS[key];
+  if (t.type === 'round') {
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(t.r, t.r, t.h, 64), matTrough);
+    body.position.y = t.h/2; body.castShadow = true;
+    const water = new THREE.Mesh(new THREE.CylinderGeometry(t.r-0.06, t.r-0.06, t.h-0.04, 64), matWater);
+    water.position.y = t.h/2+0.01;
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(t.r, 0.028, 8, 64), matRim);
+    rim.rotation.x = Math.PI/2; rim.position.y = t.h;
+    troughGroup.add(body, water, rim);
+  } else {
+    const body = new THREE.Mesh(new THREE.BoxGeometry(t.w, t.h, t.d), matTrough);
+    body.position.y = t.h/2; body.castShadow = true;
+    const water = new THREE.Mesh(new THREE.BoxGeometry(t.w-0.08, t.h-0.04, t.d-0.08), matWater);
+    water.position.y = t.h/2+0.01;
+    troughGroup.add(body, water);
+  }
+}
+
+// ── Build pads ─────────────────────────────────────────────────────────────
+function buildPads(key) {
+  padGroup.clear(); chanGroup.clear();
+  const t = TROUGHS[key];
+  const isRound = t.type === 'round';
+
+  if (isRound) {
+    const n = key === 'portable' ? 4 : 8;
+    const iR = t.r + 0.025, oR = t.r + 0.025 + padWidth;
+    const arc = (Math.PI*2)/n;
+    if (moduleSat.length !== n) moduleSat = Array(n).fill(nLoad);
+
+    for (let i=0; i<n; i++) {
+      const a0 = i*arc - 0.01, a1 = (i+1)*arc + 0.01;
+      const sat = moduleSat[i];
+      const col = highlightedPart === 'arc' ? hlColor(sat) : padColor(sat);
+
+      // Shell
+      const shape = wedgeShape(iR, oR, a0, a1);
+      const geo = new THREE.ExtrudeGeometry(shape, { depth: padThick, bevelEnabled: false });
+      const mat = new THREE.MeshLambertMaterial({ color: col });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.rotation.x = -Math.PI/2;
+      const explodeY = exploded ? 0.18 + i*0.008 : 0;
+      mesh.position.y = explodeY;
+      mesh.castShadow = true;
+      padGroup.add(mesh);
+
+      // Cartridge hint (dark inset)
+      if (highlightedPart === 'cartridge' || exploded) {
+        const cs = wedgeShape(iR+0.04, oR-0.04, a0+0.04, a1-0.04);
+        const cg = new THREE.ExtrudeGeometry(cs, { depth: padThick*0.55, bevelEnabled: false });
+        const cm = new THREE.Mesh(cg, new THREE.MeshLambertMaterial({ color: hlColor(sat) }));
+        cm.rotation.x = -Math.PI/2;
+        cm.position.y = explodeY + (exploded ? 0.12 : padThick*0.45);
+        padGroup.add(cm);
+      }
+
+      // Clips on sides
+      if (highlightedPart === 'clip') {
+        const midR = (iR+oR)/2;
+        const ca0 = (a0+0.02), ca1 = (a1-0.02);
+        padGroup.add(makeClip(Math.cos(ca0)*midR, Math.sin(ca0)*midR, -ca0));
+        padGroup.add(makeClip(Math.cos(ca1)*midR, Math.sin(ca1)*midR, -ca1));
+      }
+
+      // Channels
+      if (showChannels) {
+        const nC = 5;
+        for (let c=1; c<nC; c++) {
+          const ca = a0 + (a1-a0)*c/nC;
+          const pts = [
+            new THREE.Vector3(Math.cos(ca)*(iR+0.03), explodeY+padThick+0.003, Math.sin(ca)*(iR+0.03)),
+            new THREE.Vector3(Math.cos(ca)*(oR-0.03), explodeY+padThick+0.003, Math.sin(ca)*(oR-0.03))
+          ];
+          chanGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), matChannel));
+        }
+      }
+    }
+
+    const area = Math.PI*(oR*oR - iR*iR);
+    document.getElementById('s-parts').textContent  = n + (exploded?'':'');
+    document.getElementById('s-area').textContent   = area.toFixed(1);
+    document.getElementById('s-biochar').textContent= (area*padThick*0.35*280).toFixed(0)+'g';
+    document.getElementById('s-nred').textContent   = '>82%';
+    updateKitBox(key, n, 0, 0, n, n*2);
+
+  } else {
+    const hw = t.w/2, hd = t.d/2;
+    const iOff = 0.02, oW = padWidth;
+    if (moduleSat.length !== 6) moduleSat = Array(6).fill(nLoad);
+
+    const strips = [
+      { x:0, z:-(hd+iOff+oW/2), w:t.w+oW*2, d:oW, idx:0 },
+      { x:0, z: (hd+iOff+oW/2), w:t.w+oW*2, d:oW, idx:1 },
+    ];
+    const corners = [
+      { x:-(hw+iOff+oW/2), z:-(hd+iOff+oW/2), idx:2 },
+      { x: (hw+iOff+oW/2), z:-(hd+iOff+oW/2), idx:3 },
+      { x:-(hw+iOff+oW/2), z: (hd+iOff+oW/2), idx:4 },
+      { x: (hw+iOff+oW/2), z: (hd+iOff+oW/2), idx:5 },
+    ];
+
+    strips.forEach(s => {
+      const sat = moduleSat[s.idx];
+      const col = highlightedPart === 'straight' ? hlColor(sat) : padColor(sat);
+      const geo = new THREE.BoxGeometry(s.w - oW*2, padThick, s.d);
+      const mat = new THREE.MeshLambertMaterial({ color: col });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(s.x, padThick/2 + (exploded?0.15:0), s.z);
+      mesh.castShadow = true;
+      padGroup.add(mesh);
+      if (showChannels) {
+        const n=6;
+        for(let i=0;i<n;i++){
+          const cx = -s.w/2+oW + (s.w-oW*2)*i/(n-1);
+          const sign = s.z<0?-1:1;
+          const pts=[new THREE.Vector3(cx,padThick+0.003,s.z-sign*s.d*0.42),new THREE.Vector3(cx,padThick+0.003,s.z+sign*s.d*0.42)];
+          chanGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),matChannel));
+        }
+      }
+    });
+    corners.forEach(c => {
+      const sat = moduleSat[c.idx];
+      const col = highlightedPart === 'corner' ? hlColor(sat) : padColor(sat);
+      const geo = new THREE.BoxGeometry(oW, padThick, oW);
+      const mat = new THREE.MeshLambertMaterial({ color: col });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(c.x, padThick/2 + (exploded?0.15:0), c.z);
+      mesh.castShadow = true;
+      padGroup.add(mesh);
+    });
+
+    const area = (t.w + oW*2) * oW * 2;
+    document.getElementById('s-parts').textContent  = 6;
+    document.getElementById('s-area').textContent   = area.toFixed(1);
+    document.getElementById('s-biochar').textContent= (area*padThick*0.35*280).toFixed(0)+'g';
+    document.getElementById('s-nred').textContent   = '>75%';
+    updateKitBox(key, 0, 2, 4, 6, 12);
+  }
+}
+
+function updateKitBox(key, arc, str, cor, bio, clip) {
+  document.getElementById('k-arc').textContent  = arc+'×';
+  document.getElementById('k-str').textContent  = str+'×';
+  document.getElementById('k-cor').textContent  = cor+'×';
+  document.getElementById('k-bio').textContent  = bio+'×';
+  document.getElementById('k-clip').textContent = clip+'×';
+  document.querySelector('.kit-title').textContent = 'Kit required — '+TROUGHS[key].type;
+}
+
+function buildGround() {
+  groundGroup.clear();
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(12,12), matGround);
+  m.rotation.x = -Math.PI/2; m.receiveShadow = true;
+  groundGroup.add(m);
+}
+
+function rebuild() {
+  document.getElementById('trough-info').innerHTML = TROUGHS[currentKey].info;
+  buildTrough(currentKey);
+  buildPads(currentKey);
+}
+
+// ── UI callbacks ───────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active', ['configure','parts','simulate'][i]===name);
+  });
+  document.querySelectorAll('.panel').forEach((p,i)=>{
+    p.classList.toggle('active', ['configure','parts','simulate'][i]===name);
+  });
+}
+
+function onTroughChange(v) { currentKey = v; moduleSat = []; rebuild(); }
+function onWidth(v)  { padWidth = v/1000; document.getElementById('v-width').textContent=v+' mm'; buildPads(currentKey); }
+function onThick(v)  { padThick = v/1000; document.getElementById('v-thick').textContent=v+' mm'; buildPads(currentKey); }
+function toggleChannels() { showChannels=!showChannels; document.getElementById('t-chan').classList.toggle('on',showChannels); buildPads(currentKey); }
+function toggleExplode()  { exploded=!exploded; document.getElementById('t-exp').classList.toggle('on',exploded); buildPads(currentKey); }
+
+function onNLoad(v) {
+  nLoad = parseInt(v);
+  document.getElementById('v-nload').textContent = v+'%';
+  moduleSat = moduleSat.map(()=>nLoad);
+  buildPads(currentKey);
+  updateDays();
+}
+function onHerd(v) {
+  herdSize = parseInt(v);
+  document.getElementById('v-herd').textContent = v+' cows';
+  updateDays();
+}
+function updateDays() {
+  const nPerDay = herdSize * 3 * 2 * 8; // events * L * g/L
+  const t = TROUGHS[currentKey];
+  const iR = (t.r||0) + 0.025, oR = (t.r||0) + 0.025 + padWidth;
+  const area = t.type==='round' ? Math.PI*(oR*oR-iR*iR) : (t.w+padWidth*2)*padWidth*2;
+  const totalCapacity = area * padThick * 0.35 * 280 * 1000 / 1000; // grams
+  const days = Math.round(totalCapacity / nPerDay * 1000);
+  document.getElementById('est-days').textContent = (days>0?days:'<1') + ' days between replacements';
+}
+function resetSaturation() {
+  moduleSat = moduleSat.map(()=>0);
+  document.querySelector('input[type=range]').value = 0;
+  nLoad = 0;
+  document.getElementById('v-nload').textContent = '0%';
+  buildPads(currentKey);
+}
+
+function highlightPart(name) {
+  highlightedPart = name;
+  document.querySelectorAll('.part-item').forEach(el => el.classList.remove('selected'));
+  document.getElementById('pi-'+name)?.classList.add('selected');
+  buildPads(currentKey);
+}
+
+function setView(v) {
+  panTarget.set(0,0,0);
+  if (v==='top')  { sph={t:0, p:0.1,      r:5}; }
+  if (v==='iso')  { sph={t:Math.PI/4, p:Math.PI/3.5, r:4.5}; }
+  if (v==='side') { sph={t:0, p:Math.PI/2.2, r:4.5}; }
+}
+function resetView() { sph={t:Math.PI/4, p:Math.PI/3.5, r:4.5}; panTarget.set(0,0,0); }
+
+// ── Resize + loop ──────────────────────────────────────────────────────────
+function resize() {
+  const w=wrap.clientWidth, h=wrap.clientHeight;
+  renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize); resize();
+
+function animate() {
+  requestAnimationFrame(animate);
+  panCur.lerp(panTarget, 0.1);
+  const x=sph.r*Math.sin(sph.p)*Math.sin(sph.t);
+  const y=sph.r*Math.cos(sph.p);
+  const z=sph.r*Math.sin(sph.p)*Math.cos(sph.t);
+  camera.position.set(x+panCur.x, y+panCur.y, z+panCur.z);
+  camera.lookAt(panCur);
+  renderer.render(scene, camera);
+}
+
+buildGround(); rebuild(); updateDays(); animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NitroGuard · CowPad — Competitive Landscape</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #F4F6F5;
+  --surface: #FFFFFF;
+  --border:  #C8D5CC;
+  --border2: #E2EBE6;
+  --ink:     #1A2820;
+  --sub:     #587068;
+  --faint:   #8AA898;
+  --green:   #1B6B3C;
+  --greenl:  #DFF2E8;
+  --amber:   #9A5F00;
+  --amberl:  #FFF3D6;
+  --blue:    #1258A0;
+  --bluel:   #DBEEFF;
+  --teal:    #0A6E66;
+  --teall:   #CCEEEA;
+  --red:     #B02028;
+  --redl:    #FADADD;
+  --purple:  #5828A0;
+  --purplel: #EBD8FF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  background-image:
+    linear-gradient(var(--border2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border2) 1px,transparent 1px);
+  background-size:40px 40px;
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  min-height:100vh;
+  padding:0 0 60px;
+}
+
+/* ── Header ── */
+.header{
+  background:var(--surface);
+  border-bottom:2px solid var(--border);
+  padding:20px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-family:'Inter',sans-serif;
+  font-size:1.1rem;font-weight:700;color:var(--ink);
+  letter-spacing:-.01em;
+}
+.logo span{color:var(--green)}
+.back-btn{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--sub);border:1px solid var(--border);
+  border-radius:3px;padding:.32rem .75rem;cursor:pointer;
+  text-decoration:none;transition:all .15s;
+}
+.back-btn:hover{color:var(--green);border-color:var(--green)}
+
+.page-header{
+  padding:32px 40px 28px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.page-title{
+  font-size:1.9rem;font-weight:700;
+  color:var(--ink);margin-bottom:.4rem;
+  letter-spacing:-.02em;
+}
+.page-sub{
+  font-size:.8rem;color:var(--sub);
+  font-family:'DM Mono',monospace;letter-spacing:.03em;
+  max-width:680px;line-height:1.75;
+}
+.page-sub em{color:var(--green);font-style:normal;font-weight:500}
+
+.wrap{padding:32px 40px}
+
+/* ── Section label ── */
+.section-label{
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── Competitor grid ── */
+.comp-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;margin-bottom:40px;
+}
+@media(max-width:900px){.comp-grid{grid-template-columns:1fr 1fr}}
+
+.comp-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:6px;padding:20px;
+  position:relative;overflow:hidden;
+  transition:box-shadow .18s,border-color .18s;
+}
+.comp-card:hover{
+  box-shadow:0 4px 16px rgba(0,0,0,.07);
+  border-color:var(--c-border,var(--border));
+}
+.comp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--card-line,var(--border));
+  border-radius:6px 6px 0 0;
+}
+.comp-card.amber{--card-line:var(--amber);--c-border:#D4B070}
+.comp-card.blue {--card-line:var(--blue); --c-border:#90B8E0}
+.comp-card.red  {--card-line:var(--red);  --c-border:#D08888}
+.comp-card.green{--card-line:var(--green);--c-border:#80C0A0}
+.comp-card.muted{--card-line:var(--border);--c-border:var(--border)}
+
+.comp-name{
+  font-size:.85rem;font-weight:600;
+  color:var(--ink);margin-bottom:3px;
+}
+.comp-type{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:12px;
+}
+.comp-desc{
+  font-size:.75rem;line-height:1.65;
+  color:var(--sub);margin-bottom:12px;
+}
+.comp-tag{
+  display:inline-block;font-family:'DM Mono',monospace;
+  font-size:.58rem;letter-spacing:.06em;
+  padding:3px 8px;border-radius:20px;
+  margin-right:4px;margin-bottom:4px;
+}
+.comp-tag.no {background:var(--redl);   color:var(--red);  border:1px solid #DFAAAA}
+.comp-tag.yes{background:var(--greenl); color:var(--green);border:1px solid #A8CCBA}
+.comp-tag.par{background:var(--amberl); color:var(--amber);border:1px solid #D4B070}
+
+/* ── Inspiration row ── */
+.inspo-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:12px;margin-bottom:40px;
+}
+.inspo-card{
+  background:var(--surface);
+  border:1px solid var(--border);border-radius:6px;padding:20px;
+  position:relative;overflow:hidden;
+  transition:box-shadow .18s;
+}
+.inspo-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.inspo-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--card-line,var(--green));
+  border-radius:6px 6px 0 0;
+}
+.inspo-layer{
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--green);margin-bottom:5px;
+}
+.inspo-product{
+  font-size:.88rem;font-weight:600;
+  color:var(--ink);margin-bottom:3px;
+}
+.inspo-arrow{
+  font-family:'DM Mono',monospace;
+  font-size:.7rem;color:var(--faint);margin-bottom:10px;
+}
+.inspo-desc{
+  font-size:.73rem;line-height:1.65;color:var(--sub);
+}
+
+/* ── Gap statement ── */
+.gap-box{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:4px solid var(--green);
+  border-radius:6px;padding:28px 32px;
+  margin-bottom:40px;
+}
+.gap-quote{
+  font-size:1.1rem;font-weight:700;
+  color:var(--ink);line-height:1.55;margin-bottom:12px;
+  letter-spacing:-.01em;
+}
+.gap-quote span{color:var(--green)}
+.gap-sub{
+  font-family:'DM Mono',monospace;
+  font-size:.73rem;line-height:1.75;
+  color:var(--sub);max-width:760px;
+}
+
+/* ── Comparison table ── */
+.table-wrap{
+  overflow-x:auto;margin-bottom:40px;
+  background:var(--surface);
+  border:1px solid var(--border);border-radius:6px;
+}
+table{
+  width:100%;border-collapse:collapse;font-size:.73rem;
+}
+thead th{
+  text-align:left;padding:11px 14px;
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--faint);
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+}
+thead th:first-child{color:var(--sub)}
+tbody tr{border-bottom:1px solid var(--border2)}
+tbody tr:hover{background:#F0F5F2}
+tbody tr.highlight{
+  background:var(--greenl);
+  border-bottom:1px solid #A8CCBA;
+}
+tbody td{padding:11px 14px;color:var(--sub);line-height:1.4}
+tbody tr.highlight td{color:var(--ink)}
+tbody tr.highlight td:first-child{color:var(--green);font-weight:600}
+.tick{color:var(--green);font-weight:700}
+.cross{color:var(--red)}
+.part{color:var(--amber);font-size:.68rem;font-family:'DM Mono',monospace}
+
+/* ── Footer ── */
+.footer{
+  background:var(--surface);
+  border-top:2px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 40px;
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.07em;color:var(--faint);
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">NitroGuard <span>·</span> CowPad</div>
+  <a class="back-btn" href="index.html">← Back to Overview</a>
+</div>
+
+<div class="page-header">
+  <div class="page-title">Competitive Landscape</div>
+  <div class="page-sub">
+    No single product currently captures nitrogen at point-source, returns it as fertiliser,
+    and provides IoT feedback — all passively, without power or service visits.
+    <em>CowPad is not a new technology. It is a new configuration of proven ones.</em>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="section-label">01 — What already exists</div>
+<div class="comp-grid">
+
+  <div class="comp-card muted">
+    <div class="comp-name">Standard Rubber Trough Mats</div>
+    <div class="comp-type">Existing Hardware · NZ Market</div>
+    <div class="comp-desc">Anti-slip mats placed around troughs for hoof comfort. No nitrogen management function. Widely used on Canterbury dairy farms.</div>
+    <span class="comp-tag no">No N capture</span>
+    <span class="comp-tag no">No sensor</span>
+    <span class="comp-tag yes">Hoof comfort</span>
+  </div>
+
+  <div class="comp-card amber">
+    <div class="comp-name">Waikato Milking Systems</div>
+    <div class="comp-type">Farm Equipment · NZ</div>
+    <div class="comp-desc">Trough design and management advice for dairy farms. Optimises water access and cow flow but does not address urine nitrogen at the trough area.</div>
+    <span class="comp-tag no">No N capture</span>
+    <span class="comp-tag no">No cartridge</span>
+    <span class="comp-tag yes">Cow flow design</span>
+  </div>
+
+  <div class="comp-card amber">
+    <div class="comp-name">Biochar Soil Amendments</div>
+    <div class="comp-type">Agricultural Input · Global</div>
+    <div class="comp-desc">Bulk biochar sold as a soil amendment to improve water retention and sequester carbon. Proven NH₄⁺ adsorption (6 mg/g NO₃⁻-N). Applied broadly — not at point-source.</div>
+    <span class="comp-tag par">Biochar only</span>
+    <span class="comp-tag no">No point-capture</span>
+    <span class="comp-tag yes">Proven chemistry</span>
+  </div>
+
+  <div class="comp-card blue">
+    <div class="comp-name">ECan Groundwater Monitoring</div>
+    <div class="comp-type">Regulatory · Canterbury</div>
+    <div class="comp-desc">300+ wells monitoring nitrate levels across Canterbury. Data is available but lags 10–30 years behind farm-level action. Measures the outcome, not the source.</div>
+    <span class="comp-tag no">No intervention</span>
+    <span class="comp-tag par">Data available</span>
+    <span class="comp-tag yes">Regulatory baseline</span>
+  </div>
+
+  <div class="comp-card blue">
+    <div class="comp-name">DairyNZ Plantain Programme</div>
+    <div class="comp-type">Agronomy · NZ</div>
+    <div class="comp-desc">Plantain-based pasture mixes shown to reduce urinary nitrogen by up to 60%. Requires whole-paddock resowing. Does not address holding yards or trough areas.</div>
+    <span class="comp-tag par">Up to 60% N reduction</span>
+    <span class="comp-tag no">Whole-paddock only</span>
+    <span class="comp-tag no">No hardware</span>
+  </div>
+
+  <div class="comp-card red">
+    <div class="comp-name">European Nitrogen Filter Systems</div>
+    <div class="comp-type">Research Stage · EU</div>
+    <div class="comp-desc">Academic research into constructed wetlands and reed-bed filters for farm runoff. Expensive civil engineering, designed for effluent streams — not individual trough zones.</div>
+    <span class="comp-tag no">High cost</span>
+    <span class="comp-tag no">Civil works required</span>
+    <span class="comp-tag par">Proven filtration</span>
+  </div>
+
+</div>
+
+<div class="section-label">02 — What CowPad borrowed from (and improved)</div>
+<div class="inspo-row">
+
+  <div class="inspo-card" style="--card-line:var(--green)">
+    <div class="inspo-layer">Layer 1 · Hardware</div>
+    <div class="inspo-product">Bounty Gel (Verdesian)</div>
+    <div class="inspo-arrow">Inspiration ↓</div>
+    <div class="inspo-desc">Hydrogel that absorbs 150× its weight in water. CowPad uses biochar instead — same absorbent logic, but biochar also adsorbs NH₄⁺ ions chemically, not just physically. Result: the spent cartridge is slow-release fertiliser, not waste water.</div>
+  </div>
+
+  <div class="inspo-card" style="--card-line:var(--blue)">
+    <div class="inspo-layer">Layer 2 · IoT Sensor</div>
+    <div class="inspo-product">TrapView (Pessl Instruments)</div>
+    <div class="inspo-arrow">Inspiration ↓</div>
+    <div class="inspo-desc">Insect trap monitors with IoT sensors. Threshold exceeded → alert → service visit. CowPad applies the same logic: EC sensor reads biochar saturation → LED alert → cartridge swap. Proven model, new domain.</div>
+  </div>
+
+  <div class="inspo-card" style="--card-line:var(--amber)">
+    <div class="inspo-layer">Layer 3 · GIS Platform</div>
+    <div class="inspo-product">FBN / Farmers Business Network</div>
+    <div class="inspo-arrow">Inspiration ↓</div>
+    <div class="inspo-desc">US-based satellite + data platform for farm decision-making. CowPad uses the same spatial logic with ECan well data + Canterbury-specific inputs to map nitrogen risk zones and identify where CowPad deployment matters most.</div>
+  </div>
+
+</div>
+
+<div class="gap-box">
+  <div class="gap-quote">
+    "We are not inventing the components.<br>
+    We are assembling them in <span>a configuration that doesn't exist yet.</span>"
+  </div>
+  <div class="gap-sub">
+    Every layer of NitroGuard · CowPad maps to a validated commercial product or published research.
+    The gap in the market is not a missing technology — it is a missing integration:
+    point-source capture + passive chemistry + IoT feedback + auto-return to soil,
+    designed as a modular system that fits any trough type on any Canterbury dairy farm.
+  </div>
+</div>
+
+<div class="section-label">03 — Feature comparison</div>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Product / Approach</th>
+      <th>Point-source capture</th>
+      <th>Biochar / N adsorption</th>
+      <th>IoT feedback</th>
+      <th>Returns N to soil</th>
+      <th>Passive (no power)</th>
+      <th>Modular / replaceable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rubber trough mats</td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="cross">✗</span></td>
+    </tr>
+    <tr>
+      <td>Plantain pasture</td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="part">partial</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="cross">✗</span></td>
+    </tr>
+    <tr>
+      <td>Bulk biochar amendment</td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="cross">✗</span></td>
+    </tr>
+    <tr>
+      <td>TrapView IoT (pest)</td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="tick">✓</span></td>
+    </tr>
+    <tr>
+      <td>EU constructed wetlands</td>
+      <td><span class="part">partial</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="cross">✗</span></td>
+      <td><span class="part">partial</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="cross">✗</span></td>
+    </tr>
+    <tr class="highlight">
+      <td>NitroGuard · CowPad (V1)</td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="part">V2 ballistic</span></td>
+      <td><span class="tick">✓</span></td>
+      <td><span class="tick">✓</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div><!-- /wrap -->
+
+<div class="footer">
+  <span>NitroGuard · CowPad — ENGN676 · Lincoln University · 2026</span>
+  <span>Designer: Yu Zhou · Supervisor: Majeed Safa</span>
+</div>
+
+</body>
+</html>

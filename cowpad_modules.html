@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CowPad — 4 Module Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F4F6F5; --surface:#FFFFFF; --border:#C8D5CC; --border2:#E2EBE6;
+    --ink:#1A2820; --sub:#587068; --faint:#8AA898;
+    --green:#1B6B3C; --greenl:#DFF2E8;
+    --amber:#9A5F00; --amberl:#FFF3D6;
+    --red:#B02028;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    background-image:
+      linear-gradient(var(--border2) 1px,transparent 1px),
+      linear-gradient(90deg,var(--border2) 1px,transparent 1px);
+    background-size: 40px 40px;
+    color: var(--ink);
+  }
+  .page-header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    padding: 20px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { font-size:1.1rem; font-weight:700; color:var(--ink); letter-spacing:-.01em; }
+  .logo span { color:var(--green); }
+  .back-btn {
+    font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--sub); border:1px solid var(--border);
+    border-radius:3px; padding:.32rem .75rem; text-decoration:none; transition:all .15s;
+  }
+  .back-btn:hover { color:var(--green); border-color:var(--green); }
+  .page-sub-header {
+    background:var(--surface); border-bottom:1px solid var(--border);
+    padding:20px 40px 16px;
+  }
+  .page-sub-header h1 {
+    font-size: 1.5rem; font-weight: 700; color: var(--ink);
+    letter-spacing: -.02em; margin-bottom: 4px;
+  }
+  .page-sub-header p {
+    font-family: 'DM Mono', monospace; font-size: .65rem;
+    color: var(--faint); letter-spacing: .15em; text-transform: uppercase;
+  }
+  .content { padding: 32px 40px 56px; }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 48px;
+  }
+  .module {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px;
+    display: flex; flex-direction: column; gap: 14px;
+    transition: box-shadow .18s;
+  }
+  .module:hover { box-shadow: 0 4px 18px rgba(0,0,0,.07); }
+  .module-title {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--green);
+    border-bottom: 2px solid var(--greenl);
+    padding-bottom: 7px;
+  }
+  .module-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--faint);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-top: -8px;
+  }
+  .views { display: flex; gap: 24px; align-items: flex-start; }
+  .view-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; color: var(--faint);
+    text-align: center; margin-top: 6px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .specs { font-size: 11px; color: var(--sub); line-height: 1.9; margin-top: 4px; }
+  .specs span { display: block; }
+  .specs strong { color: var(--ink); }
+  .divider {
+    grid-column: 1 / -1; border: none;
+    border-top: 1px solid var(--border); margin: 8px 0;
+  }
+  .note {
+    grid-column: 1 / -1; font-size: 11px; color: var(--sub);
+    line-height: 1.8; margin-top: 8px; padding: 16px 20px;
+    border: 1px solid var(--border2); border-radius: 5px;
+    background: var(--surface);
+  }
+  .summary-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 10px; color: var(--ink);
+  }
+  .summary-row { font-size: 11px; color: var(--sub); line-height: 2; }
+  .summary-row strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="logo">NitroGuard <span>·</span> CowPad</div>
+  <a class="back-btn" href="index.html">← Back to Overview</a>
+</div>
+<div class="page-sub-header">
+  <h1>Module Templates</h1>
+  <p>4 Tile Types · Plan View + Cross-Section · Load-Bearing Structure · Snap Connectors</p>
+</div>
+<div class="content">
+
+<div class="grid">
+
+  <!-- MODULE A: ROUND TROUGH WEDGE -->
+  <div class="module">
+    <div class="module-title">Module A — Round Trough Wedge</div>
+    <div class="module-tag">For Hynds Pinnacle 1100L / 750L / 515L circular troughs</div>
+    <div class="views">
+
+      <!-- Top view -->
+      <div>
+        <svg width="220" height="200" viewBox="0 0 220 200">
+          <defs>
+            <pattern id="biochar-a" patternUnits="userSpaceOnUse" width="6" height="6">
+              <rect width="6" height="6" fill="#d4c9a8"/>
+              <circle cx="3" cy="3" r="1.2" fill="#8a7a55" opacity="0.6"/>
+            </pattern>
+            <clipPath id="wedge-clip">
+              <path d="M 110 110 L 20 30 A 120 120 0 0 1 200 30 Z"/>
+            </clipPath>
+          </defs>
+
+          <!-- Wedge fill (biochar zone) -->
+          <path d="M 110 110 L 20 30 A 120 120 0 0 1 200 30 Z"
+                fill="url(#biochar-a)" stroke="#7a6a45" stroke-width="1.5"/>
+
+          <!-- Inner arc (trough edge) -->
+          <path d="M 110 110 L 68 68 A 58 58 0 0 1 152 68 Z"
+                fill="#e8e2d4" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+
+          <!-- Radial channels -->
+          <line x1="110" y1="110" x2="20" y2="30" stroke="#6b5d3f" stroke-width="1.2" opacity="0.7"/>
+          <line x1="110" y1="110" x2="65" y2="15" stroke="#6b5d3f" stroke-width="1.2" opacity="0.7"/>
+          <line x1="110" y1="110" x2="110" y2="10" stroke="#6b5d3f" stroke-width="1.2" opacity="0.7"/>
+          <line x1="110" y1="110" x2="155" y2="15" stroke="#6b5d3f" stroke-width="1.2" opacity="0.7"/>
+          <line x1="110" y1="110" x2="200" y2="30" stroke="#6b5d3f" stroke-width="1.2" opacity="0.7"/>
+
+          <!-- Interlocking clips on sides -->
+          <rect x="14" y="24" width="12" height="8" rx="2" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+          <rect x="194" y="24" width="12" height="8" rx="2" fill="#fff" stroke="#c0392b" stroke-width="1.5"/>
+
+          <!-- Dimension annotations -->
+          <line x1="110" y1="115" x2="110" y2="195" stroke="#555" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <line x1="20" y1="195" x2="200" y2="195" stroke="#555" stroke-width="0.8"/>
+          <line x1="20" y1="190" x2="20" y2="200" stroke="#555" stroke-width="0.8"/>
+          <line x1="200" y1="190" x2="200" y2="200" stroke="#555" stroke-width="0.8"/>
+          <text x="90" y="193" font-size="9" fill="#555">600 mm</text>
+
+          <!-- Inner radius label -->
+          <line x1="110" y1="110" x2="152" y2="68" stroke="#aaa" stroke-width="0.8" stroke-dasharray="2,2"/>
+          <text x="130" y="92" font-size="8" fill="#999">r=875mm</text>
+
+          <!-- Labels -->
+          <text x="95" y="60" font-size="9" fill="#6b5d3f" font-style="italic">biochar fill</text>
+          <text x="5" y="22" font-size="9" fill="#c0392b">♂ clip</text>
+          <text x="192" y="22" font-size="9" fill="#c0392b">♀ clip</text>
+        </svg>
+        <div class="view-label">Top View (1:10 scale)</div>
+      </div>
+
+      <!-- Cross-section -->
+      <div>
+        <svg width="160" height="200" viewBox="0 0 160 200">
+          <!-- Ground -->
+          <rect x="10" y="155" width="140" height="6" fill="#c8b99a" rx="1"/>
+          <text x="10" y="175" font-size="8" fill="#999">ground / concrete pad</text>
+
+          <!-- Module body -->
+          <rect x="20" y="105" width="120" height="50" rx="3" fill="#d4c9a8" stroke="#7a6a45" stroke-width="1.5"/>
+
+          <!-- Internal ribs (load bearing) -->
+          <line x1="47" y1="105" x2="47" y2="155" stroke="#7a6a45" stroke-width="1.2"/>
+          <line x1="74" y1="105" x2="74" y2="155" stroke="#7a6a45" stroke-width="1.2"/>
+          <line x1="101" y1="105" x2="101" y2="155" stroke="#7a6a45" stroke-width="1.2"/>
+          <line x1="128" y1="105" x2="128" y2="155" stroke="#7a6a45" stroke-width="1.2"/>
+
+          <!-- Top surface channels -->
+          <path d="M20 105 Q33 98 47 105 Q60 98 74 105 Q87 98 101 105 Q114 98 128 105 Q141 98 140 105" fill="none" stroke="#555" stroke-width="1.5"/>
+
+          <!-- Biochar layer label -->
+          <rect x="50" y="115" width="60" height="18" rx="2" fill="#8a7a55" opacity="0.3"/>
+          <text x="55" y="128" font-size="8" fill="#6b5d3f">biochar layer</text>
+
+          <!-- Cow hoof load arrow -->
+          <line x1="80" y1="30" x2="80" y2="95" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow-load)"/>
+          <defs>
+            <marker id="arrow-load" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#c0392b"/>
+            </marker>
+          </defs>
+          <!-- Hoof shape -->
+          <ellipse cx="80" cy="22" rx="22" ry="12" fill="#5d4037" opacity="0.8"/>
+          <text x="52" y="20" font-size="8" fill="#5d4037">cow hoof</text>
+          <text x="52" y="50" font-size="8" fill="#c0392b">~180 kg</text>
+
+          <!-- Rib label -->
+          <line x1="128" y1="130" x2="148" y2="130" stroke="#aaa" stroke-width="0.8"/>
+          <text x="148" y="133" font-size="8" fill="#888" transform="rotate(-90 148 133)">ribs</text>
+
+          <!-- Height label -->
+          <line x1="12" y1="105" x2="12" y2="155" stroke="#555" stroke-width="0.8"/>
+          <line x1="8" y1="105" x2="16" y2="105" stroke="#555" stroke-width="0.8"/>
+          <line x1="8" y1="155" x2="16" y2="155" stroke="#555" stroke-width="0.8"/>
+          <text x="0" y="133" font-size="8" fill="#555" transform="rotate(-90 0 133)">50mm</text>
+        </svg>
+        <div class="view-label">Cross-Section A–A</div>
+      </div>
+    </div>
+    <div class="specs">
+      <span><strong>Trough fit:</strong> Round ⌀1600–1750mm (8 wedges = full ring)</span>
+      <span><strong>Module arc:</strong> 45° wedge, inner r=875mm, outer r=1475mm</span>
+      <span><strong>Thickness:</strong> 50mm (30mm biochar + 20mm rib base)</span>
+      <span><strong>Load:</strong> Ribbed wall structure, 5 ribs per wedge</span>
+      <span><strong>Clip:</strong> Male/female interlocking sides, quarter-turn lock</span>
+    </div>
+  </div>
+
+  <!-- MODULE B: RECTANGULAR LINEAR -->
+  <div class="module">
+    <div class="module-title">Module B — Rectangular Linear Strip</div>
+    <div class="module-tag">For Hynds rectangular / oblong troughs, both long sides</div>
+    <div class="views">
+
+      <div>
+        <svg width="220" height="200" viewBox="0 0 220 200">
+          <defs>
+            <pattern id="biochar-b" patternUnits="userSpaceOnUse" width="6" height="6">
+              <rect width="6" height="6" fill="#d4c9a8"/>
+              <circle cx="3" cy="3" r="1.2" fill="#8a7a55" opacity="0.6"/>
+            </pattern>
+          </defs>
+
+          <!-- Trough (grey, for reference) -->
+          <rect x="70" y="60" width="80" height="80" rx="4" fill="#ddd" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="85" y="106" font-size="9" fill="#aaa">trough</text>
+          <text x="82" y="118" font-size="8" fill="#bbb">(reference)</text>
+
+          <!-- Module B strip (top) -->
+          <rect x="20" y="20" width="180" height="40" rx="3" fill="url(#biochar-b)" stroke="#7a6a45" stroke-width="1.5"/>
+
+          <!-- Channels (perpendicular to trough) -->
+          <line x1="50" y1="20" x2="50" y2="60" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="80" y1="20" x2="80" y2="60" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="110" y1="20" x2="110" y2="60" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="140" y1="20" x2="140" y2="60" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="170" y1="20" x2="170" y2="60" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+
+          <!-- End clips -->
+          <rect x="10" y="28" width="10" height="24" rx="2" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+          <rect x="200" y="28" width="10" height="24" rx="2" fill="#fff" stroke="#c0392b" stroke-width="1.5"/>
+
+          <!-- Width arrow -->
+          <line x1="20" y1="10" x2="200" y2="10" stroke="#555" stroke-width="0.8"/>
+          <line x1="20" y1="6" x2="20" y2="14" stroke="#555" stroke-width="0.8"/>
+          <line x1="200" y1="6" x2="200" y2="14" stroke="#555" stroke-width="0.8"/>
+          <text x="85" y="8" font-size="9" fill="#555">600 mm (1 unit)</text>
+
+          <!-- Depth arrow -->
+          <line x1="210" y1="20" x2="210" y2="60" stroke="#555" stroke-width="0.8"/>
+          <line x1="206" y1="20" x2="214" y2="20" stroke="#555" stroke-width="0.8"/>
+          <line x1="206" y1="60" x2="214" y2="60" stroke="#555" stroke-width="0.8"/>
+          <text x="213" y="44" font-size="9" fill="#555" transform="rotate(90 213 44)">600mm</text>
+
+          <!-- Note: extend by adding more units -->
+          <text x="28" y="35" font-size="9" fill="#6b5d3f" font-style="italic">+ end-to-end</text>
+          <text x="28" y="47" font-size="9" fill="#6b5d3f" font-style="italic">to fit any length</text>
+
+          <!-- Color indicator dot -->
+          <circle cx="190" cy="30" r="6" fill="#27ae60" stroke="#1e8449" stroke-width="1"/>
+          <text x="178" y="52" font-size="8" fill="#27ae60">N sensor</text>
+        </svg>
+        <div class="view-label">Top View</div>
+      </div>
+
+      <!-- Cross section B -->
+      <div>
+        <svg width="160" height="200" viewBox="0 0 160 200">
+          <!-- Ground -->
+          <rect x="10" y="155" width="140" height="6" fill="#c8b99a" rx="1"/>
+          <text x="10" y="175" font-size="8" fill="#999">ground</text>
+
+          <!-- Module body with honeycomb hint -->
+          <rect x="20" y="105" width="120" height="50" rx="3" fill="#d4c9a8" stroke="#7a6a45" stroke-width="1.5"/>
+
+          <!-- Honeycomb cells (simplified) -->
+          <polygon points="47,110 57,116 57,128 47,134 37,128 37,116" fill="none" stroke="#7a6a45" stroke-width="1"/>
+          <polygon points="67,110 77,116 77,128 67,134 57,128 57,116" fill="none" stroke="#7a6a45" stroke-width="1"/>
+          <polygon points="87,110 97,116 97,128 87,134 77,128 77,116" fill="none" stroke="#7a6a45" stroke-width="1"/>
+          <polygon points="107,110 117,116 117,128 107,134 97,128 97,116" fill="none" stroke="#7a6a45" stroke-width="1"/>
+
+          <!-- Top channel profile -->
+          <path d="M20 105 Q33 99 47 105 Q60 99 74 105 Q87 99 101 105 Q114 99 128 105 Q141 99 140 105" fill="none" stroke="#555" stroke-width="1.5"/>
+
+          <!-- Load arrow -->
+          <line x1="80" y1="35" x2="80" y2="95" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow-load)"/>
+          <ellipse cx="80" cy="27" rx="22" ry="12" fill="#5d4037" opacity="0.8"/>
+          <text x="52" y="25" font-size="8" fill="#5d4037">cow hoof</text>
+          <text x="55" y="55" font-size="8" fill="#c0392b">~180 kg</text>
+
+          <!-- Honeycomb label -->
+          <line x1="117" y1="122" x2="148" y2="122" stroke="#aaa" stroke-width="0.8"/>
+          <text x="130" y="120" font-size="8" fill="#888">honeycomb</text>
+          <text x="130" y="130" font-size="8" fill="#888">infill</text>
+        </svg>
+        <div class="view-label">Cross-Section B–B</div>
+      </div>
+    </div>
+    <div class="specs">
+      <span><strong>Trough fit:</strong> Rectangular, any length (chain multiple units)</span>
+      <span><strong>Module size:</strong> 600 × 600mm per unit, stackable end-to-end</span>
+      <span><strong>Structure:</strong> Honeycomb infill base (40% density, PLA)</span>
+      <span><strong>Channels:</strong> Perpendicular to trough edge, 5 per module</span>
+      <span><strong>Sensor:</strong> Optional color-change N indicator dot (top surface)</span>
+    </div>
+  </div>
+
+  <!-- MODULE C: CORNER CONNECTOR -->
+  <div class="module">
+    <div class="module-title">Module C — Corner Connector (L-piece)</div>
+    <div class="module-tag">Joins Module B strips at rectangular trough corners</div>
+    <div class="views">
+
+      <div>
+        <svg width="220" height="200" viewBox="0 0 220 200">
+          <defs>
+            <pattern id="biochar-c" patternUnits="userSpaceOnUse" width="6" height="6">
+              <rect width="6" height="6" fill="#d4c9a8"/>
+              <circle cx="3" cy="3" r="1.2" fill="#8a7a55" opacity="0.6"/>
+            </pattern>
+          </defs>
+
+          <!-- L-shape module -->
+          <path d="M20 20 L140 20 L140 80 L80 80 L80 180 L20 180 Z"
+                fill="url(#biochar-c)" stroke="#7a6a45" stroke-width="1.5"/>
+
+          <!-- Channels horizontal arm -->
+          <line x1="20" y1="35" x2="140" y2="35" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="20" y1="50" x2="140" y2="50" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="20" y1="65" x2="140" y2="65" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+
+          <!-- Channels vertical arm -->
+          <line x1="35" y1="80" x2="35" y2="180" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="50" y1="80" x2="50" y2="180" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+          <line x1="65" y1="80" x2="65" y2="180" stroke="#6b5d3f" stroke-width="1" opacity="0.7"/>
+
+          <!-- Inner corner trough reference -->
+          <rect x="80" y="20" width="100" height="160" rx="3" fill="#ddd" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="110" y="108" font-size="9" fill="#aaa">trough</text>
+          <text x="110" y="120" font-size="8" fill="#bbb">corner</text>
+
+          <!-- Connection clips -->
+          <rect x="130" y="24" width="10" height="18" rx="2" fill="#fff" stroke="#c0392b" stroke-width="1.5"/>
+          <rect x="24" y="170" width="18" height="10" rx="2" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+
+          <!-- Radial channel at corner -->
+          <line x1="80" y1="80" x2="20" y2="20" stroke="#6b5d3f" stroke-width="1.5" stroke-dasharray="4,2" opacity="0.8"/>
+          <text x="22" y="75" font-size="8" fill="#6b5d3f" font-style="italic">corner drain</text>
+
+          <!-- Dimension -->
+          <line x1="20" y1="10" x2="140" y2="10" stroke="#555" stroke-width="0.8"/>
+          <line x1="20" y1="6" x2="20" y2="14" stroke="#555" stroke-width="0.8"/>
+          <line x1="140" y1="6" x2="140" y2="14" stroke="#555" stroke-width="0.8"/>
+          <text x="55" y="8" font-size="9" fill="#555">600 mm</text>
+        </svg>
+        <div class="view-label">Top View</div>
+      </div>
+
+      <div>
+        <svg width="160" height="200" viewBox="0 0 160 200">
+          <!-- Ground -->
+          <rect x="10" y="155" width="140" height="6" fill="#c8b99a" rx="1"/>
+
+          <!-- L cross-section (simplified as rectangle) -->
+          <rect x="20" y="105" width="120" height="50" rx="3" fill="#d4c9a8" stroke="#7a6a45" stroke-width="1.5"/>
+
+          <!-- Diagonal rib for corner strength -->
+          <line x1="20" y1="155" x2="140" y2="105" stroke="#7a6a45" stroke-width="1.5" opacity="0.6"/>
+          <line x1="20" y1="130" x2="80" y2="105" stroke="#7a6a45" stroke-width="1" opacity="0.4"/>
+          <line x1="80" y1="155" x2="140" y2="130" stroke="#7a6a45" stroke-width="1" opacity="0.4"/>
+
+          <text x="35" y="135" font-size="8" fill="#7a6a45">diagonal ribs</text>
+          <text x="35" y="145" font-size="8" fill="#888">(corner stress)</text>
+
+          <!-- Load arrow -->
+          <line x1="80" y1="35" x2="80" y2="95" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow-load)"/>
+          <ellipse cx="80" cy="27" rx="22" ry="12" fill="#5d4037" opacity="0.8"/>
+          <text x="55" y="55" font-size="8" fill="#c0392b">corner load</text>
+          <text x="55" y="65" font-size="8" fill="#c0392b">concentrated</text>
+        </svg>
+        <div class="view-label">Cross-Section</div>
+      </div>
+    </div>
+    <div class="specs">
+      <span><strong>Shape:</strong> L-piece, 600 × 600mm arms</span>
+      <span><strong>Connects:</strong> Module B strips at 90° corners</span>
+      <span><strong>Extra structure:</strong> Diagonal ribs at corner junction (higher stress zone)</span>
+      <span><strong>Channels:</strong> Both arms + diagonal corner drain to outer edge</span>
+    </div>
+  </div>
+
+  <!-- MODULE D: UNIVERSAL GROUND TILE -->
+  <div class="module">
+    <div class="module-title">Module D — Universal Ground Tile</div>
+    <div class="module-tag">Portable troughs / high-traffic areas / any freeform layout</div>
+    <div class="views">
+
+      <div>
+        <svg width="220" height="200" viewBox="0 0 220 200">
+          <defs>
+            <pattern id="biochar-d" patternUnits="userSpaceOnUse" width="6" height="6">
+              <rect width="6" height="6" fill="#d4c9a8"/>
+              <circle cx="3" cy="3" r="1.2" fill="#8a7a55" opacity="0.6"/>
+            </pattern>
+          </defs>
+
+          <!-- 3 tiles shown connecting -->
+          <!-- Tile 1 -->
+          <rect x="10" y="60" width="80" height="80" rx="4" fill="url(#biochar-d)" stroke="#7a6a45" stroke-width="1.5"/>
+          <!-- Tile 2 (connected) -->
+          <rect x="90" y="60" width="80" height="80" rx="4" fill="url(#biochar-d)" stroke="#7a6a45" stroke-width="1.5"/>
+          <!-- Tile 3 (below tile 1) -->
+          <rect x="10" y="140" width="80" height="60" rx="4" fill="url(#biochar-d)" stroke="#7a6a45" stroke-width="1" opacity="0.5"/>
+          <text x="24" y="175" font-size="9" fill="#aaa" font-style="italic">extends...</text>
+
+          <!-- Grid channels on tile 1 -->
+          <line x1="37" y1="60" x2="37" y2="140" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+          <line x1="64" y1="60" x2="64" y2="140" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+          <line x1="10" y1="87" x2="90" y2="87" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+          <line x1="10" y1="114" x2="90" y2="114" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+
+          <!-- Grid channels on tile 2 -->
+          <line x1="117" y1="60" x2="117" y2="140" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+          <line x1="144" y1="60" x2="144" y2="140" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+          <line x1="90" y1="87" x2="170" y2="87" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+          <line x1="90" y1="114" x2="170" y2="114" stroke="#6b5d3f" stroke-width="1" opacity="0.6"/>
+
+          <!-- Snap connectors between tiles -->
+          <circle cx="90" cy="80" r="4" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+          <circle cx="90" cy="100" r="4" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+          <circle cx="90" cy="120" r="4" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+
+          <circle cx="50" cy="140" r="4" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+          <circle cx="70" cy="140" r="4" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+
+          <!-- N indicator on one tile -->
+          <circle cx="155" cy="75" r="7" fill="#27ae60" stroke="#1e8449" stroke-width="1.5"/>
+          <text x="143" y="95" font-size="8" fill="#27ae60">N full</text>
+
+          <!-- Dimension -->
+          <line x1="10" y1="50" x2="90" y2="50" stroke="#555" stroke-width="0.8"/>
+          <line x1="10" y1="46" x2="10" y2="54" stroke="#555" stroke-width="0.8"/>
+          <line x1="90" y1="46" x2="90" y2="54" stroke="#555" stroke-width="0.8"/>
+          <text x="30" y="48" font-size="9" fill="#555">300 mm</text>
+
+          <!-- Label -->
+          <text x="175" y="110" font-size="9" fill="#c0392b">● snap</text>
+          <text x="175" y="122" font-size="8" fill="#999">connectors</text>
+
+          <!-- Portable trough hint -->
+          <ellipse cx="195" cy="100" rx="18" ry="25" fill="#ddd" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="183" y="99" font-size="7" fill="#aaa">portable</text>
+          <text x="186" y="109" font-size="7" fill="#aaa">trough</text>
+        </svg>
+        <div class="view-label">Top View — Tiles connect freely</div>
+      </div>
+
+      <div>
+        <svg width="160" height="200" viewBox="0 0 160 200">
+          <!-- Ground -->
+          <rect x="10" y="155" width="140" height="6" fill="#c8b99a" rx="1"/>
+          <text x="10" y="175" font-size="8" fill="#999">ground (any surface)</text>
+
+          <!-- Tile body — thinner (30mm) -->
+          <rect x="20" y="120" width="120" height="35" rx="3" fill="#d4c9a8" stroke="#7a6a45" stroke-width="1.5"/>
+
+          <!-- Grid ribs -->
+          <line x1="50" y1="120" x2="50" y2="155" stroke="#7a6a45" stroke-width="1"/>
+          <line x1="80" y1="120" x2="80" y2="155" stroke="#7a6a45" stroke-width="1"/>
+          <line x1="110" y1="120" x2="110" y2="155" stroke="#7a6a45" stroke-width="1"/>
+          <line x1="20" y1="137" x2="140" y2="137" stroke="#7a6a45" stroke-width="1" opacity="0.5"/>
+
+          <!-- Channel profile -->
+          <path d="M20 120 Q35 115 50 120 Q65 115 80 120 Q95 115 110 120 Q125 115 140 120" fill="none" stroke="#555" stroke-width="1.5"/>
+
+          <!-- Anti-slip bumps -->
+          <circle cx="35" cy="118" r="2.5" fill="#aaa"/>
+          <circle cx="65" cy="118" r="2.5" fill="#aaa"/>
+          <circle cx="95" cy="118" r="2.5" fill="#aaa"/>
+          <circle cx="125" cy="118" r="2.5" fill="#aaa"/>
+          <text x="28" y="112" font-size="8" fill="#888">anti-slip</text>
+
+          <!-- Load arrow -->
+          <line x1="80" y1="45" x2="80" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow-load)"/>
+          <ellipse cx="80" cy="37" rx="22" ry="12" fill="#5d4037" opacity="0.8"/>
+          <text x="55" y="65" font-size="8" fill="#c0392b">~180 kg</text>
+
+          <!-- Height label -->
+          <line x1="12" y1="120" x2="12" y2="155" stroke="#555" stroke-width="0.8"/>
+          <line x1="8" y1="120" x2="16" y2="120" stroke="#555" stroke-width="0.8"/>
+          <line x1="8" y1="155" x2="16" y2="155" stroke="#555" stroke-width="0.8"/>
+          <text x="0" y="141" font-size="8" fill="#555" transform="rotate(-90 0 141)">30mm</text>
+        </svg>
+        <div class="view-label">Cross-Section</div>
+      </div>
+    </div>
+    <div class="specs">
+      <span><strong>Size:</strong> 300 × 300mm per tile (smaller, lighter, stackable)</span>
+      <span><strong>Connects:</strong> Snap connectors on all 4 edges — arrange any shape</span>
+      <span><strong>Thickness:</strong> 30mm (thinner — portable, low ground clearance)</span>
+      <span><strong>Structure:</strong> Grid rib base + anti-slip surface bumps</span>
+      <span><strong>Use case:</strong> Portable troughs, irregular areas, trial installations</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Material + Load Summary -->
+  <div style="grid-column:1/-1;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:8px;">
+
+      <div style="background:#FFFFFF;border:1px solid #C8D5CC;border-radius:6px;padding:18px;">
+        <div class="summary-label" style="color:#1B6B3C;">Load-Bearing Analysis</div>
+        <div class="summary-row">
+          <div>Dairy cow weight: <strong>450–650 kg</strong></div>
+          <div>Per hoof (4 hooves): <strong>~160 kg</strong></div>
+          <div>Hoof contact area: <strong>~150 cm²</strong></div>
+          <div>Pressure: <strong>~1.1 kg/cm²</strong></div>
+          <div style="margin-top:6px;color:#B02028;">PLA compressive strength: <strong>~50 MPa</strong></div>
+          <div style="color:#1B6B3C;">Rib structure factor of safety: <strong>&gt; 8×</strong></div>
+          <div style="color:#8AA898;font-size:10px;margin-top:4px;">→ Ribbed/honeycomb PLA easily handles cow load</div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #C8D5CC;border-radius:6px;padding:18px;">
+        <div class="summary-label" style="color:#9A5F00;">Material Options</div>
+        <div class="summary-row">
+          <div><strong>Prototype:</strong> Cardboard + biochar granules</div>
+          <div><strong>V1 (viable now):</strong> PLA 3D print, biochar fill layer</div>
+          <div><strong>V2 (target):</strong> Biochar-PLA composite (4 wt%)</div>
+          <div><strong>V3 (ideal):</strong> Fully biodegradable biopolymer + biochar</div>
+          <div style="margin-top:6px;color:#8AA898;font-size:10px;">V2 filament: DIY via twin-screw extruder<br>Not commercially available yet — research gap</div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #C8D5CC;border-radius:6px;padding:18px;">
+        <div class="summary-label" style="color:#1258A0;">Prototype Recommendation</div>
+        <div class="summary-row">
+          <div style="color:#B02028;font-weight:700;">→ Make Module A (wedge)</div>
+          <div>Most visually compelling</div>
+          <div>Shows radial channel concept clearly</div>
+          <div>Clip connection easy to demo</div>
+          <div style="margin-top:6px;">Also cut Module D tile to show</div>
+          <div>the universal tile concept</div>
+          <div style="margin-top:6px;color:#8AA898;font-size:10px;">Both together: &lt; 2 hours in cardboard</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="note">
+    <strong>Clip system:</strong> All modules use the same male/female quarter-turn connector on edges — one standardised clip across all 4 types. Modules A/B/C/D are all interoperable at their straight edges. &nbsp;|&nbsp;
+    <strong>Drainage:</strong> All channels slope outward at 2° — liquid drains to outer edge, collected by a perimeter lip into soil or a drainage strip. &nbsp;|&nbsp;
+    <strong>Replacement:</strong> Each module lifts out individually. Saturated biochar layer is replaceable without replacing the structural shell (two-part design: shell + biochar cartridge).
+  </p>
+
+</div><!-- /grid -->
+</div><!-- /content -->
+
+</body>
+</html>

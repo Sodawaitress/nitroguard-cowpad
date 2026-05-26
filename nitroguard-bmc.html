@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NitroGuard — Business Model Canvas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #F4F6F5;
+  --surface: #FFFFFF;
+  --border:  #C8D5CC;
+  --border2: #E2EBE6;
+  --ink:     #1A2820;
+  --sub:     #587068;
+  --faint:   #8AA898;
+  --green:   #1B6B3C;
+  --greenl:  #DFF2E8;
+  --amber:   #9A5F00;
+  --amberl:  #FFF3D6;
+  --blue:    #1258A0;
+  --bluel:   #DBEEFF;
+  --teal:    #0A6E66;
+  --teall:   #CCEEEA;
+  --red:     #B02028;
+  --redl:    #FADADD;
+  --purple:  #5828A0;
+  --purplel: #EBD8FF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  background-image:
+    linear-gradient(var(--border2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border2) 1px,transparent 1px);
+  background-size:40px 40px;
+  color:var(--ink);
+  min-height:100vh;
+  padding:0 0 48px;
+}
+
+/* Header */
+.header{
+  background:var(--surface);
+  border-bottom:2px solid var(--border);
+  padding:20px 32px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.logo-block{display:flex;flex-direction:column;gap:5px}
+.logo{
+  font-size:1.8rem;font-weight:800;letter-spacing:-.03em;
+  color:var(--green);line-height:1;
+}
+.tagline{
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;color:var(--faint);
+  letter-spacing:.2em;text-transform:uppercase;
+}
+.header-right{
+  text-align:right;
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;color:var(--sub);
+  letter-spacing:.06em;line-height:1.7;
+}
+.header-right span{
+  display:block;font-size:.72rem;
+  color:var(--amber);font-weight:500;margin-bottom:2px;
+}
+
+/* Canvas */
+.canvas-wrap{padding:24px 32px 0}
+.canvas{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.4fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:10px;
+  margin-bottom:10px;
+}
+.bottom-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:0 32px 0;
+}
+
+.cell{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:18px;
+  position:relative;
+  overflow:hidden;
+  transition:box-shadow .18s,border-color .18s;
+}
+.cell:hover{
+  box-shadow:0 4px 18px rgba(0,0,0,.07);
+  border-color:var(--c-border,var(--border));
+}
+.cell::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:var(--c-line,var(--border));
+  border-radius:6px 6px 0 0;
+}
+.cell.green  {--c-line:var(--green);  --c-border:#90C8A8}
+.cell.blue   {--c-line:var(--blue);   --c-border:#90B8E0}
+.cell.yellow {--c-line:var(--amber);  --c-border:#D4B070}
+.cell.teal   {--c-line:var(--teal);   --c-border:#80C0BC}
+.cell.pink   {--c-line:#A0308A;       --c-border:#C880B8}
+.cell.purple {--c-line:var(--purple); --c-border:#A898D8}
+
+/* Value Proposition center */
+.cell.vp{
+  grid-row:1/3;grid-column:3;
+  background:var(--greenl);
+  border-color:#B0D8C0;
+  display:flex;flex-direction:column;
+  --c-line:var(--green);
+}
+.cell.vp:hover{border-color:var(--green)}
+
+.cell-num{
+  font-family:'DM Mono',monospace;
+  font-size:.52rem;color:var(--faint);
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px;
+}
+.cell-title{
+  font-size:.8rem;font-weight:700;
+  letter-spacing:.02em;text-transform:uppercase;
+  color:var(--ink);margin-bottom:12px;
+  display:flex;align-items:center;gap:7px;
+}
+.cell-title .icon{
+  width:20px;height:20px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;background:var(--border2);
+}
+
+.item{
+  display:flex;align-items:flex-start;
+  gap:7px;margin-bottom:9px;
+  font-size:.72rem;line-height:1.55;color:var(--sub);
+}
+.item-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--green);margin-top:5px;flex-shrink:0;
+}
+.item-dot.blue   {background:var(--blue)}
+.item-dot.yellow {background:var(--amber)}
+.item-dot.teal   {background:var(--teal)}
+.item-dot.pink   {background:#A0308A}
+.item-dot.purple {background:var(--purple)}
+
+.vp-headline{
+  font-size:1.4rem;font-weight:800;
+  line-height:1.2;color:var(--green);
+  margin-bottom:12px;letter-spacing:-.02em;
+}
+.vp-sub{
+  font-size:.72rem;color:var(--sub);
+  line-height:1.7;margin-bottom:16px;
+}
+.vp-stat{
+  background:var(--surface);
+  border:1px solid #B0D8C0;
+  border-radius:5px;
+  padding:10px 12px;margin-bottom:8px;
+}
+.vp-stat-num{
+  font-size:1.5rem;font-weight:800;
+  color:var(--green);line-height:1;margin-bottom:3px;
+}
+.vp-stat-label{
+  font-family:'DM Mono',monospace;
+  font-size:.55rem;color:var(--sub);
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.vp-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* divider */
+.divider{width:100%;height:1px;background:var(--border2);margin:10px 0}
+
+.tag{
+  display:inline-block;font-family:'DM Mono',monospace;
+  font-size:.55rem;padding:3px 8px;border-radius:20px;
+  background:var(--greenl);color:var(--green);
+  border:1px solid #A8CCBA;letter-spacing:.1em;margin-bottom:10px;
+}
+.tag.blue   {background:var(--bluel);   color:var(--blue);  border-color:#90B8E0}
+.tag.yellow {background:var(--amberl); color:var(--amber); border-color:#D4B070}
+.tag.purple {background:var(--purplel);color:var(--purple);border-color:#A898D8}
+
+/* bottom cells */
+.cell.cost-cell{
+  background:#F8F4FF;
+  border-color:#C8B8E8;
+  --c-line:var(--purple);
+}
+.cell.rev-cell{
+  background:var(--amberl);
+  border-color:#D4B070;
+  --c-line:var(--amber);
+}
+
+/* footer */
+.footer{
+  background:var(--surface);
+  border-top:2px solid var(--border);
+  margin-top:24px;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:13px 32px;
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;color:var(--faint);letter-spacing:.07em;
+}
+.footer-badge{display:flex;gap:14px}
+.badge{
+  padding:4px 12px;border-radius:20px;
+  border:1px solid var(--border);
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;letter-spacing:.08em;
+}
+.badge.green{color:var(--green);border-color:#A8CCBA;background:var(--greenl)}
+.badge.blue {color:var(--blue); border-color:#90B8E0;background:var(--bluel)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-block">
+    <div class="logo">NitroGuard</div>
+    <div class="tagline">Business Model Canvas · ENGN676 · Lincoln University</div>
+  </div>
+  <div class="header-right">
+    <span>AgriTech · Canterbury, NZ</span>
+    Passive Nitrogen Management<br>for Dairy Farms
+  </div>
+</div>
+
+<div class="canvas-wrap">
+<div class="canvas">
+
+  <!-- 1. Key Partners -->
+  <div class="cell blue" style="grid-row:1;grid-column:1">
+    <div class="cell-num">01</div>
+    <div class="cell-title"><span class="icon">🤝</span> Key Partners</div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>Halter NZ</strong> — virtual fencing integration &amp; livestock GPS data</div></div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>Environment Canterbury (ECan)</strong> — groundwater monitoring data (386 wells)</div></div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>DairyNZ</strong> — agronomic research, farmer networks &amp; plantain programme data</div></div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>Lincoln University</strong> — soil science R&amp;D, Canterbury-specific datasets</div></div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>Trough suppliers</strong> — bundle distribution channel (Hynds, Gallagher)</div></div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>NIWA</strong> — weather &amp; rainfall forecast API</div></div>
+  </div>
+
+  <!-- 2. Key Activities -->
+  <div class="cell teal" style="grid-row:1;grid-column:2">
+    <div class="cell-num">02</div>
+    <div class="cell-title"><span class="icon">⚙️</span> Key Activities</div>
+    <div class="item"><div class="item-dot teal"></div><div>Biochar cartridge production &amp; quality control</div></div>
+    <div class="item"><div class="item-dot teal"></div><div>EC sensor manufacturing &amp; firmware (Arduino Nano)</div></div>
+    <div class="item"><div class="item-dot teal"></div><div>ML model training on Canterbury nitrate data (KNN K=3)</div></div>
+    <div class="item"><div class="item-dot teal"></div><div>GIS risk mapping &amp; farm deployment planning</div></div>
+    <div class="item"><div class="item-dot teal"></div><div>Spent cartridge collection &amp; slow-release N fertiliser return</div></div>
+    <div class="item"><div class="item-dot teal"></div><div>Regulatory compliance reporting for ECan Farm Plans</div></div>
+  </div>
+
+  <!-- 3. Value Proposition HERO -->
+  <div class="cell vp green" style="grid-row:1/3;grid-column:3">
+    <div class="cell-num">03</div>
+    <div class="cell-title"><span class="icon">💡</span> Value Proposition</div>
+    <div class="vp-headline">Capture nitrogen<br>before it reaches<br>the groundwater.</div>
+    <div class="vp-sub">CowPad places replaceable biochar cartridges at the point of urination — trough-side — adsorbing NH₄⁺ passively, triggering an IoT alert when saturated, and returning spent cartridges as slow-release fertiliser. No power. No service visits. No paddock replanting.</div>
+    <div class="divider"></div>
+    <div class="tag">FOR FARMERS</div>
+    <div class="item"><div class="item-dot"></div><div>Reduce nitrogen leaching without reducing herd size or income</div></div>
+    <div class="item"><div class="item-dot"></div><div>Meet ECan nitrogen limits with evidence, not guesswork</div></div>
+    <div class="item"><div class="item-dot"></div><div>Replace cartridges every 15–20 days, no tools required</div></div>
+    <div class="divider"></div>
+    <div class="tag blue">FOR ECAN / DAIRYNZ</div>
+    <div class="item"><div class="item-dot blue"></div><div>Farm-level nitrate monitoring at trough scale</div></div>
+    <div class="item"><div class="item-dot blue"></div><div>Compliance data replacing manual audits</div></div>
+    <div class="divider"></div>
+    <div class="vp-stats">
+      <div class="vp-stat">
+        <div class="vp-stat-num">82%</div>
+        <div class="vp-stat-label">N reduction (biochar)</div>
+      </div>
+      <div class="vp-stat">
+        <div class="vp-stat-num">15–20d</div>
+        <div class="vp-stat-label">Cartridge cycle</div>
+      </div>
+      <div class="vp-stat">
+        <div class="vp-stat-num">62%</div>
+        <div class="vp-stat-label">Wells worsening (2024)</div>
+      </div>
+      <div class="vp-stat">
+        <div class="vp-stat-num">386</div>
+        <div class="vp-stat-label">ECan wells monitored</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Customer Relationships -->
+  <div class="cell pink" style="grid-row:1;grid-column:4">
+    <div class="cell-num">04</div>
+    <div class="cell-title"><span class="icon">💬</span> Customer Relationships</div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>Trough-bundled supply</strong> — sold with new trough purchase via Hynds / Gallagher distributors</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>Cartridge subscription</strong> — regular replacement delivery, 15–20 day cycle</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>IoT dashboard</strong> — per-farm saturation status &amp; replacement scheduling</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>Automated alerts</strong> — SMS/LED when biochar saturated</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>Annual N recovery report</strong> — ECan-ready compliance documentation</div></div>
+  </div>
+
+  <!-- 5. Customer Segments -->
+  <div class="cell yellow" style="grid-row:1;grid-column:5">
+    <div class="cell-num">05</div>
+    <div class="cell-title"><span class="icon">🎯</span> Customer Segments</div>
+    <div class="tag yellow">PRIMARY</div>
+    <div class="item"><div class="item-dot yellow"></div><div><strong>Canterbury dairy farmers</strong> facing ECan nitrogen limits</div></div>
+    <div class="item"><div class="item-dot yellow"></div><div>Mid-large farms: 300–1500+ cows, irrigated systems</div></div>
+    <div class="item"><div class="item-dot yellow"></div><div><strong>Trough suppliers</strong> — Hynds, Gallagher as bundle partners</div></div>
+    <div class="divider"></div>
+    <div class="tag blue">INSTITUTIONAL</div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>Environment Canterbury</strong> — monitoring &amp; policy tool</div></div>
+    <div class="item"><div class="item-dot blue"></div><div><strong>DairyNZ</strong> — research data &amp; extension tool</div></div>
+  </div>
+
+  <!-- 6. Key Resources -->
+  <div class="cell teal" style="grid-row:2;grid-column:2">
+    <div class="cell-num">06</div>
+    <div class="cell-title"><span class="icon">🧱</span> Key Resources</div>
+    <div class="item"><div class="item-dot teal"></div><div><strong>PLA tile moulds</strong> — 4 tile types (arc, straight, corner, sensor)</div></div>
+    <div class="item"><div class="item-dot teal"></div><div><strong>Biochar supply chain</strong> — agricultural-grade, NH₄⁺ adsorption ≥6 mg/g</div></div>
+    <div class="item"><div class="item-dot teal"></div><div><strong>EC sensor hardware</strong> — Arduino Nano, SS probes, D4 rain sensor</div></div>
+    <div class="item"><div class="item-dot teal"></div><div><strong>ML models</strong> — Canterbury-trained KNN (R²=0.750)</div></div>
+    <div class="item"><div class="item-dot teal"></div><div><strong>GIS platform</strong> — ECan well data, land-use layers</div></div>
+  </div>
+
+  <!-- 7. Channels -->
+  <div class="cell pink" style="grid-row:2;grid-column:4">
+    <div class="cell-num">07</div>
+    <div class="cell-title"><span class="icon">📡</span> Channels</div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>Trough supplier bundles</strong> — Hynds, Gallagher, Waikato Milking Systems</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>Web dashboard</strong> — farm management portal &amp; GIS risk map</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>DairyNZ extension network</strong> — trusted farm advisor channel</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>ECan partnership</strong> — bundled with Farm Environment Plan</div></div>
+    <div class="item"><div class="item-dot pink"></div><div><strong>Fieldays / agri events</strong> — direct farmer outreach</div></div>
+  </div>
+
+</div><!-- /canvas -->
+</div>
+
+<div class="bottom-row">
+
+  <div class="cell cost-cell">
+    <div class="cell-num">08</div>
+    <div class="cell-title"><span class="icon">💸</span> Cost Structure</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="tag purple">FIXED COSTS</div>
+        <div class="item"><div class="item-dot purple"></div><div>Tile mould tooling &amp; PLA manufacturing setup</div></div>
+        <div class="item"><div class="item-dot purple"></div><div>EC sensor hardware development</div></div>
+        <div class="item"><div class="item-dot purple"></div><div>ML model &amp; GIS platform development</div></div>
+        <div class="item"><div class="item-dot purple"></div><div>Cloud infrastructure for IoT data</div></div>
+      </div>
+      <div>
+        <div class="tag blue">VARIABLE COSTS</div>
+        <div class="item"><div class="item-dot blue"></div><div>Biochar media per cartridge</div></div>
+        <div class="item"><div class="item-dot blue"></div><div>Cartridge logistics &amp; collection</div></div>
+        <div class="item"><div class="item-dot blue"></div><div>Customer onboarding support</div></div>
+        <div class="item"><div class="item-dot blue"></div><div>Regulatory compliance updates</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cell rev-cell">
+    <div class="cell-num">09</div>
+    <div class="cell-title"><span class="icon">💰</span> Revenue Streams</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="tag yellow">PRIMARY</div>
+        <div class="item"><div class="item-dot yellow"></div><div><strong>Hardware kit</strong> — tiles + EC sensor (~$150–300 NZD per trough)</div></div>
+        <div class="item"><div class="item-dot yellow"></div><div><strong>Cartridge subscription</strong> — replacement biochar every 15–20 days</div></div>
+        <div class="item"><div class="item-dot yellow"></div><div><strong>N recovery credit</strong> — spent cartridge as certified slow-release fertiliser</div></div>
+      </div>
+      <div>
+        <div class="tag blue">SECONDARY</div>
+        <div class="item"><div class="item-dot blue"></div><div><strong>GIS SaaS</strong> — farm risk mapping dashboard subscription</div></div>
+        <div class="item"><div class="item-dot blue"></div><div><strong>Institutional licence</strong> — ECan &amp; DairyNZ regional monitoring</div></div>
+        <div class="item"><div class="item-dot blue"></div><div><strong>Compliance reports</strong> — ECan-ready automated annual reports</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>ENGN676 · Agricultural Engineering · Lincoln University Canterbury · 2026</div>
+  <div class="footer-badge">
+    <span class="badge green">Protecting Canterbury Groundwater</span>
+    <span class="badge blue">Passive · Modular · Circular</span>
+  </div>
+</div>
+
+</body>
+</html>
