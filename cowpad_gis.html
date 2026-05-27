@@ -257,8 +257,14 @@ svg.trend { width:100%; height:100%; overflow:visible; }
 
     <div class="slabel">Nitrate by Zone</div>
     <table class="ztable" id="zone-table">
-      <thead><tr><th>Zone</th><th>Wells</th><th>Avg mg/L</th><th>>limit</th></tr></thead>
-      <tbody id="zone-tbody"></tbody>
+      <thead><tr><th>Zone</th><th>Wells</th><th>Avg mg/L</th><th>&gt;limit</th></tr></thead>
+      <tbody id="zone-tbody">
+        <tr><td>Selwyn</td><td>73</td><td class="v" style="color:#ff8a80">7.43</td><td style="color:#ff8a80">14</td></tr>
+        <tr><td>Waimakariri / Christchurch</td><td>84</td><td class="v" style="color:#ffb74d">4.84</td><td style="color:#ffb74d">5</td></tr>
+        <tr><td>Kaikoura / Hurunui</td><td>58</td><td class="v">3.42</td><td style="color:rgba(255,255,255,.35)">4</td></tr>
+        <tr><td>South Canterbury / Waitaki</td><td>113</td><td class="v">3.37</td><td style="color:rgba(255,255,255,.35)">4</td></tr>
+        <tr><td>North Canterbury</td><td>58</td><td class="v">2.46</td><td style="color:rgba(255,255,255,.35)">0</td></tr>
+      </tbody>
     </table>
 
     <div class="slabel" style="margin-top:.6rem">Selected Well</div>
@@ -300,24 +306,24 @@ svg.trend { width:100%; height:100%; overflow:visible; }
   <!-- ZONES TAB -->
   <div class="ppage" id="tab-zones">
 
-    <div class="slabel" style="color:var(--accent)">卫星如何识别4个高氮区</div>
+    <div class="slabel" style="color:var(--accent)">How Satellite Identifies the 4 High-N Zones</div>
     <div style="font-size:.69rem;color:rgba(255,255,255,.35);line-height:1.7;margin-bottom:.5rem">
-      卫星无法直接测mg/L。但以下四个区域各有独特的地面视觉签名，配合LAWA井数据可推断N超标概率。
+      Satellites cannot directly measure mg/L. But each of these four zones has a distinct ground signature — combined with LAWA well data, we can infer where nitrogen exceedance probability is highest.
     </div>
 
     <!-- Zone 1: Laneways -->
     <div style="background:rgba(229,57,53,.08);border:1px solid rgba(229,57,53,.25);border-radius:.35rem;padding:.65rem .75rem;margin-bottom:.4rem">
       <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem">
         <span style="background:#e53935;border-radius:50%;width:8px;height:8px;flex-shrink:0;display:inline-block"></span>
-        <strong style="font-size:.72rem;color:#ff6b6b;font-family:monospace;letter-spacing:.04em">① LANEWAYS 通道</strong>
-        <span style="margin-left:auto;font-size:.6rem;color:rgba(229,57,53,.7);font-family:monospace">N最高</span>
+        <strong style="font-size:.72rem;color:#ff6b6b;font-family:monospace;letter-spacing:.04em">① LANEWAYS</strong>
+        <span style="margin-left:auto;font-size:.6rem;color:rgba(229,57,53,.7);font-family:monospace">Highest N</span>
       </div>
       <div style="font-size:.68rem;color:rgba(255,255,255,.5);line-height:1.85">
-        <strong style="color:var(--sub)">卫星可见：</strong>连接牧场与奶厂的细长裸地条纹，NDVI≈0，宽3–6m，在Canterbury卫星图里清晰可见（线性压实路面）<br>
-        <strong style="color:var(--sub)">N信号：</strong>两侧草边异常绿（NDVI >0.8）= N luxury uptake = 尿液N超出牧草吸收能力<br>
-        <strong style="color:var(--sub)">超标推断：</strong>通道末端LAWA井 > 8 mg/L → 通道N贡献基本确定<br>
-        <strong style="color:var(--sub)">文献：</strong>Chikazhe et al. 2023 — 通道N浓度 > 水槽区<br>
-        <strong style="color:var(--accent)">CowPad模块：</strong>Module B 直条砖 · V2目标
+        <strong style="color:var(--sub)">Satellite signature:</strong> Narrow bare-soil strips (3–6 m wide) connecting paddocks to the dairy shed — NDVI ≈ 0, clearly visible as linear compacted tracks<br>
+        <strong style="color:var(--sub)">N signal:</strong> Abnormally green grass on both sides (NDVI &gt;0.8) = N-luxury uptake = urine N exceeding pasture absorption capacity<br>
+        <strong style="color:var(--sub)">Exceedance inference:</strong> LAWA wells at laneway ends consistently &gt;8 mg/L → laneway N contribution confirmed<br>
+        <strong style="color:var(--sub)">Literature:</strong> Chikazhe et al. 2023 — laneway N concentrations exceed trough zones<br>
+        <strong style="color:var(--accent)">CowPad module:</strong> Module B straight tiles · V2 target
       </div>
     </div>
 
@@ -325,14 +331,14 @@ svg.trend { width:100%; height:100%; overflow:visible; }
     <div style="background:rgba(255,112,67,.08);border:1px solid rgba(255,112,67,.25);border-radius:.35rem;padding:.65rem .75rem;margin-bottom:.4rem">
       <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem">
         <span style="background:#ff7043;border-radius:50%;width:8px;height:8px;flex-shrink:0;display:inline-block"></span>
-        <strong style="font-size:.72rem;color:#ff8a65;font-family:monospace;letter-spacing:.04em">② HOLDING YARD 等待区</strong>
-        <span style="margin-left:auto;font-size:.6rem;color:rgba(255,112,67,.7);font-family:monospace">N极高</span>
+        <strong style="font-size:.72rem;color:#ff8a65;font-family:monospace;letter-spacing:.04em">② HOLDING YARD</strong>
+        <span style="margin-left:auto;font-size:.6rem;color:rgba(255,112,67,.7);font-family:monospace">Very High N</span>
       </div>
       <div style="font-size:.68rem;color:rgba(255,255,255,.5);line-height:1.85">
-        <strong style="color:var(--sub)">卫星可见：</strong>奶厂旁大面积矩形裸地，从卫星图可直接识别奶厂建筑 + 紧邻的硬化等待区<br>
-        <strong style="color:var(--sub)">N信号：</strong>牛挤奶前等候30–60分钟，尿液高度集中；周边草地CCCI（叶绿素指数）极高<br>
-        <strong style="color:var(--sub)">超标推断：</strong>硬化地面产生径流 → 渗入周边土壤 → 附近LAWA井N水平直接反映<br>
-        <strong style="color:var(--accent)">CowPad模块：</strong>Module D 地面砖大格式 · V3目标
+        <strong style="color:var(--sub)">Satellite signature:</strong> Large rectangular bare-soil pad adjacent to the milking shed — dairy shed building + hardstand waiting area directly identifiable from satellite imagery<br>
+        <strong style="color:var(--sub)">N signal:</strong> Cows wait 30–60 min before milking, urine highly concentrated; surrounding pasture shows very high CCCI (chlorophyll content index)<br>
+        <strong style="color:var(--sub)">Exceedance inference:</strong> Hardstand runoff infiltrates adjacent soil → nearby LAWA well N levels directly reflect this loading<br>
+        <strong style="color:var(--accent)">CowPad module:</strong> Module D large-format paving · V3 target
       </div>
     </div>
 
@@ -340,14 +346,14 @@ svg.trend { width:100%; height:100%; overflow:visible; }
     <div style="background:rgba(255,193,7,.07);border:1px solid rgba(255,193,7,.2);border-radius:.35rem;padding:.65rem .75rem;margin-bottom:.4rem">
       <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem">
         <span style="background:#ffc107;border-radius:50%;width:8px;height:8px;flex-shrink:0;display:inline-block"></span>
-        <strong style="font-size:.72rem;color:#ffe082;font-family:monospace;letter-spacing:.04em">③ SHADE AREAS 遮阴处</strong>
-        <span style="margin-left:auto;font-size:.6rem;color:rgba(255,193,7,.7);font-family:monospace">N高·季节性</span>
+        <strong style="font-size:.72rem;color:#ffe082;font-family:monospace;letter-spacing:.04em">③ SHADE AREAS</strong>
+        <span style="margin-left:auto;font-size:.6rem;color:rgba(255,193,7,.7);font-family:monospace">High N · Seasonal</span>
       </div>
       <div style="font-size:.68rem;color:rgba(255,255,255,.5);line-height:1.85">
-        <strong style="color:var(--sub)">卫星可见：</strong>防护林/树带（shelter belts）Canterbury卫星图可见，树冠下不规则裸斑 = 夏季聚集踩踏<br>
-        <strong style="color:var(--sub)">N信号：</strong>夏季（12–2月）影像最有效；树冠部分遮挡但周边N-luxury草环可见<br>
-        <strong style="color:var(--sub)">局限：</strong>树冠遮挡地面，需夏季多时相比较；FBN免费卫星提供定期更新<br>
-        <strong style="color:var(--accent)">CowPad模块：</strong>Module D 可移动地面砖 · V3
+        <strong style="color:var(--sub)">Satellite signature:</strong> Shelter belts / tree rows visible in Canterbury imagery; irregular bare patches under canopy = summer congregation and compaction<br>
+        <strong style="color:var(--sub)">N signal:</strong> Summer (Dec–Feb) imagery most effective; partial canopy occlusion but N-luxury grass ring visible at canopy edge<br>
+        <strong style="color:var(--sub)">Limitation:</strong> Canopy blocks ground view — requires multi-temporal summer comparison; free satellite providers (FBN) update periodically<br>
+        <strong style="color:var(--accent)">CowPad module:</strong> Module D portable paving · V3
       </div>
     </div>
 
@@ -355,86 +361,86 @@ svg.trend { width:100%; height:100%; overflow:visible; }
     <div style="background:var(--greenl);border:1px solid rgba(74,154,106,.25);border-radius:.35rem;padding:.65rem .75rem;margin-bottom:.4rem">
       <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem">
         <span style="background:var(--accent);border-radius:50%;width:8px;height:8px;flex-shrink:0;display:inline-block"></span>
-        <strong style="font-size:.72rem;color:#80e8a0;font-family:monospace;letter-spacing:.04em">④ WATER TROUGHS 水槽区</strong>
-        <span style="margin-left:auto;font-size:.6rem;color:rgba(74,154,106,.8);font-family:monospace">N高·点源</span>
+        <strong style="font-size:.72rem;color:#80e8a0;font-family:monospace;letter-spacing:.04em">④ WATER TROUGHS</strong>
+        <span style="margin-left:auto;font-size:.6rem;color:rgba(74,154,106,.8);font-family:monospace">High N · Point Source</span>
       </div>
       <div style="font-size:.68rem;color:rgba(255,255,255,.5);line-height:1.85">
-        <strong style="color:var(--sub)">卫星可见：</strong>圆形/矩形裸地斑块（直径10–30m），在3–5m分辨率下可识别；圆形转轴灌溉圈中心往往即为水槽位<br>
-        <strong style="color:var(--sub)">N信号：</strong>裸地圈（NDVI≈0）+ 外围1–3m高NDVI草环 = 尿液N点源标志<br>
-        <strong style="color:var(--sub)">CCCI：</strong>叶绿素含量指数在草环处异常高 = N直接可见于叶片中<br>
-        <strong style="color:var(--accent)">CowPad模块：</strong>Module A 弧形砖 + B/C · <strong style="color:var(--ink)">V1 当前目标</strong>
+        <strong style="color:var(--sub)">Satellite signature:</strong> Circular or rectangular bare-soil patches (10–30 m diameter), identifiable at 3–5 m resolution; centre of centre-pivot irrigation circles often coincides with trough location<br>
+        <strong style="color:var(--sub)">N signal:</strong> Bare zone (NDVI ≈ 0) + surrounding 1–3 m high-NDVI grass ring = urine N point-source signature<br>
+        <strong style="color:var(--sub)">CCCI:</strong> Elevated chlorophyll content at grass ring — N directly visible in leaf tissue<br>
+        <strong style="color:var(--accent)">CowPad module:</strong> Module A arc tiles + B/C · <strong style="color:var(--ink)">V1 current target</strong>
       </div>
     </div>
 
     <!-- NDVI index reference -->
     <div style="margin-top:.6rem">
-      <div class="slabel" style="color:var(--amber)">精准农业卫星指数 · Vegetation Indices</div>
+      <div class="slabel" style="color:var(--amber)">Vegetation Indices — Precision Agriculture Reference</div>
       <table style="width:100%;border-collapse:collapse;font-size:.66rem;margin-bottom:.5rem">
         <thead>
           <tr style="border-bottom:1px solid rgba(74,154,106,.2)">
-            <th style="color:var(--sub);padding:.3rem .4rem;text-align:left;font-weight:600;letter-spacing:.05em">指数</th>
-            <th style="color:var(--sub);padding:.3rem .4rem;text-align:left;font-weight:600;letter-spacing:.05em">值域</th>
-            <th style="color:var(--sub);padding:.3rem .4rem;text-align:left;font-weight:600;letter-spacing:.05em">农业含义</th>
+            <th style="color:var(--sub);padding:.3rem .4rem;text-align:left;font-weight:600;letter-spacing:.05em">Index</th>
+            <th style="color:var(--sub);padding:.3rem .4rem;text-align:left;font-weight:600;letter-spacing:.05em">Range</th>
+            <th style="color:var(--sub);padding:.3rem .4rem;text-align:left;font-weight:600;letter-spacing:.05em">Agricultural meaning</th>
           </tr>
         </thead>
         <tbody>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
             <td style="padding:.25rem .4rem;color:var(--amber);font-family:monospace">NDVI</td>
             <td style="padding:.25rem .4rem;color:#ff8a80;font-family:monospace">0.0–0.15</td>
-            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">裸地/硬化 — 通道/水槽聚集区</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">Bare / hardstand — laneways and trough congregation zones</td>
           </tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
             <td style="padding:.25rem .4rem;color:var(--amber);font-family:monospace">NDVI</td>
             <td style="padding:.25rem .4rem;color:#ffc107;font-family:monospace">0.15–0.4</td>
-            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">稀疏/受压 — 踩踏边缘过渡带</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">Sparse / stressed — compaction transition zone</td>
           </tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
             <td style="padding:.25rem .4rem;color:var(--amber);font-family:monospace">NDVI</td>
             <td style="padding:.25rem .4rem;color:#8bc34a;font-family:monospace">0.4–0.7</td>
-            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">正常牧草生长</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">Normal pasture growth</td>
           </tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
             <td style="padding:.25rem .4rem;color:var(--amber);font-family:monospace">NDVI</td>
             <td style="padding:.25rem .4rem;color:#4caf7d;font-family:monospace">0.7–0.9</td>
-            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)"><strong style="color:#80e8a0">N-luxury</strong> — 尿液N超出吸收上限，高风险</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)"><strong style="color:#80e8a0">N-luxury</strong> — urine N exceeds pasture uptake capacity, high leaching risk</td>
           </tr>
           <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
             <td style="padding:.25rem .4rem;color:#a0d8ef;font-family:monospace">MSAVI</td>
-            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.5);font-family:monospace">低值</td>
-            <td style="padding:.25rem .4rep;color:rgba(255,255,255,.45)">裸土干扰大时替代NDVI（稀疏植被更准）</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.5);font-family:monospace">low</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">Use instead of NDVI where bare soil dominates (more accurate for sparse vegetation)</td>
           </tr>
           <tr>
             <td style="padding:.25rem .4rem;color:#c8a0ef;font-family:monospace">CCCI</td>
-            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.5);font-family:monospace">高值</td>
-            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">叶片叶绿素含量 = 直接的叶面N指标，比NDVI更早检测到N过剩</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.5);font-family:monospace">high</td>
+            <td style="padding:.25rem .4rem;color:rgba(255,255,255,.45)">Leaf chlorophyll content = direct foliar N indicator; detects N excess earlier than NDVI</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="slabel" style="color:var(--amber);margin-top:.5rem">坡度分级 · Slope Risk (N Leaching)</div>
+      <div class="slabel" style="color:var(--amber);margin-top:.5rem">Slope Risk — N Leaching Pathway</div>
       <div style="font-size:.67rem;color:rgba(255,255,255,.45);line-height:1.9">
         <div style="display:flex;justify-content:space-between;padding:.15rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
           <span style="color:#4caf7d">▪ 0–2°</span>
-          <span>Canterbury平原主体 · 地下渗漏为主，尿液向下直达地下水</span>
+          <span>Canterbury Plains dominant — subsurface leaching, urine N travels directly to groundwater</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:.15rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
           <span style="color:#ffc107">▪ 2–8°</span>
-          <span>中等风险 · 地表径流 + 地下渗漏并行</span>
+          <span>Moderate risk — surface runoff and subsurface leaching combined</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:.15rem 0">
-          <span style="color:#e53935">▪ >8°</span>
-          <span>高坡面径流 · N随水流快速离开农场 → 进入河流</span>
+          <span style="color:#e53935">▪ &gt;8°</span>
+          <span>High surface runoff — N leaves the farm rapidly via watercourses</span>
         </div>
       </div>
       <div style="font-size:.62rem;color:rgba(255,255,255,.2);font-family:monospace;margin-top:.35rem;line-height:1.7">
-        Canterbury平原大部分为0–2° → 地下渗漏主导 → LAWA井数据直接反映<br>
-        专业工具：LINZ NZ 8m DEM · Sentinel-2 WMTS · Climate FieldView · Trimble Ag
+        Canterbury Plains is predominantly 0–2° → subsurface leaching dominates → LAWA well data directly reflects farm N loading<br>
+        Tools: LINZ NZ 8m DEM · Sentinel-2 WMTS · Climate FieldView · Trimble Ag
       </div>
     </div>
 
     <!-- Honest limit -->
     <div style="font-size:.65rem;color:rgba(255,255,255,.25);line-height:1.8;font-family:monospace;padding:.4rem .5rem;border-top:1px solid rgba(74,154,106,.1);margin-top:.5rem">
-      诚实说明：卫星只能识别区域位置和地表N信号。<br>判断是否超过11.3 mg/L标准 → 仍需LAWA地下水井实测数据。<br>地图上绿色圆圈 = 已有测量数据确认超8 mg/L的区域 = CowPad优先部署目标。
+      Note: Satellite identifies zone location and surface N signals only.<br>To confirm exceedance of the 11.3 mg/L standard → LAWA groundwater well measurements remain the authoritative source.<br>Green circles on the map = zones confirmed &gt;8 mg/L by measured data = priority CowPad deployment targets.
     </div>
   </div>
 
