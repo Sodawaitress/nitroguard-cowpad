@@ -38,13 +38,65 @@ body{
   font-family:'Inter',system-ui,sans-serif;
   min-height:100vh;
   display:flex;flex-direction:column;
-  /* subtle engineering grid */
+}
+
+/* ── Engineering grid as animated overlay ── */
+.grid-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
     linear-gradient(var(--border2) 1px,transparent 1px),
     linear-gradient(90deg,var(--border2) 1px,transparent 1px);
   background-size:40px 40px;
   background-position:center center;
+  opacity:0;
+  animation:anim-grid 1.1s cubic-bezier(.4,0,.2,1) 0.05s forwards;
 }
+
+/* ── Keyframes ── */
+@keyframes anim-grid{
+  0%  {opacity:0}
+  100%{opacity:1}
+}
+@keyframes anim-slide-down{
+  0%  {opacity:0;transform:translateY(-22px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@keyframes anim-slide-up{
+  0%  {opacity:0;transform:translateY(18px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@keyframes anim-fade{
+  0%  {opacity:0}
+  100%{opacity:1}
+}
+
+/* ── Entrance animations ── */
+.titleblock{
+  opacity:0;
+  animation:anim-slide-down .65s cubic-bezier(.22,1,.36,1) .45s forwards;
+}
+.statsbar{
+  opacity:0;
+  animation:anim-slide-up .55s cubic-bezier(.22,1,.36,1) .85s forwards;
+}
+.hero-desc{
+  opacity:0;
+  animation:anim-fade .5s ease .95s forwards;
+}
+.grid-label{
+  opacity:0;
+  animation:anim-fade .4s ease 1.05s forwards;
+}
+/* Nav cards stagger — 6 cards × 100ms apart */
+.nav-card:nth-child(1){opacity:0;animation:anim-slide-up .5s cubic-bezier(.22,1,.36,1) 1.10s forwards}
+.nav-card:nth-child(2){opacity:0;animation:anim-slide-up .5s cubic-bezier(.22,1,.36,1) 1.20s forwards}
+.nav-card:nth-child(3){opacity:0;animation:anim-slide-up .5s cubic-bezier(.22,1,.36,1) 1.30s forwards}
+.nav-card:nth-child(4){opacity:0;animation:anim-slide-up .5s cubic-bezier(.22,1,.36,1) 1.40s forwards}
+.nav-card:nth-child(5){opacity:0;animation:anim-slide-up .5s cubic-bezier(.22,1,.36,1) 1.50s forwards}
+.nav-card:nth-child(6){opacity:0;animation:anim-slide-up .5s cubic-bezier(.22,1,.36,1) 1.60s forwards}
+
+/* ── All page sections above grid overlay ── */
+.titleblock,.statsbar,.main,.footer{position:relative;z-index:1}
 
 /* ── Title block (top) ── */
 .titleblock{
@@ -250,6 +302,95 @@ body{
 }
 .hero-desc em{color:var(--ink);font-style:normal;font-weight:500}
 
+/* ── How It Works section ── */
+.how-section{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:32px 40px;
+  position:relative;z-index:1;
+}
+.how-label{
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--faint);
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;
+}
+.how-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.how-inner{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:28px;
+  align-items:center;
+}
+@media(max-width:760px){.how-inner{grid-template-columns:1fr}}
+
+/* SVG diagram */
+.how-svg-wrap{
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+  background:#f9fafb;
+  position:relative;
+  aspect-ratio:16/7;
+}
+.how-svg-wrap svg{width:100%;height:100%}
+
+/* Step panel */
+.how-panel{
+  display:flex;flex-direction:column;gap:16px;
+}
+.step-dots{
+  display:flex;gap:7px;flex-wrap:wrap;
+}
+.step-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--border);cursor:pointer;
+  transition:background .2s,transform .2s;
+  border:none;padding:0;
+}
+.step-dot.active{background:var(--green);transform:scale(1.3)}
+.step-num{
+  font-family:'DM Mono',monospace;
+  font-size:.56rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint);
+}
+.step-title{
+  font-size:.95rem;font-weight:600;
+  color:var(--ink);letter-spacing:-.01em;
+  line-height:1.3;min-height:2.6em;
+}
+.step-desc{
+  font-size:.73rem;line-height:1.8;
+  color:var(--sub);min-height:5em;
+}
+.step-controls{
+  display:flex;gap:10px;align-items:center;margin-top:4px;
+}
+.step-btn{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--sub);
+  padding:7px 14px;border-radius:4px;
+  cursor:pointer;transition:all .15s;
+}
+.step-btn:hover{border-color:var(--green);color:var(--green)}
+.step-btn:disabled{opacity:.3;cursor:default}
+.step-btn.play{
+  background:var(--green);color:#fff;border-color:var(--green);
+}
+.step-btn.play:hover{background:#14562f}
+.step-progress{
+  flex:1;height:2px;background:var(--border2);border-radius:2px;overflow:hidden;
+}
+.step-progress-fill{
+  height:100%;background:var(--green);
+  transition:width .4s ease;
+}
+
 /* ── Footer (engineering title block style) ── */
 .footer{
   background:var(--surface);
@@ -276,6 +417,9 @@ body{
 </style>
 </head>
 <body>
+
+<!-- Animated engineering grid background -->
+<div class="grid-bg" aria-hidden="true"></div>
 
 <!-- Engineering Title Block -->
 <div class="titleblock">
@@ -321,6 +465,435 @@ body{
     <div class="stat-l">System layers: hardware / IoT / GIS</div>
   </div>
 </div>
+
+<!-- How It Works Animation -->
+<div class="how-section">
+  <div class="how-label">How it works</div>
+  <div class="how-inner">
+
+    <!-- SVG Diagram -->
+    <div class="how-svg-wrap">
+      <svg id="how-svg" viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" font-family="'DM Mono',monospace">
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#1258A0"/>
+          </marker>
+          <marker id="arr-green" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#1B6B3C"/>
+          </marker>
+          <!-- droplet shape -->
+          <radialGradient id="drop-grad" cx="40%" cy="35%">
+            <stop offset="0%" stop-color="#6BB8F0"/>
+            <stop offset="100%" stop-color="#1258A0"/>
+          </radialGradient>
+          <!-- biochar particle -->
+          <radialGradient id="bio-grad" cx="40%" cy="35%">
+            <stop offset="0%" stop-color="#8B6B3C"/>
+            <stop offset="100%" stop-color="#4A3318"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ═══ STATIC BACKGROUND ═══ -->
+        <!-- Trough circle on left -->
+        <circle cx="68" cy="148" r="52" fill="none" stroke="#C8D5CC" stroke-width="2"/>
+        <circle cx="68" cy="148" r="36" fill="#DBEEFF" stroke="#90B8E0" stroke-width="1"/>
+        <text x="68" y="152" text-anchor="middle" font-size="8" fill="#587068" letter-spacing="0">TROUGH</text>
+        <!-- water level -->
+        <path d="M32,148 Q68,140 104,148" fill="none" stroke="#1258A0" stroke-width="1.5" opacity=".5"/>
+
+        <!-- CowPad cross-section — 4 layers -->
+        <!-- BASE 6mm -->
+        <rect x="130" y="210" width="420" height="28" rx="2" fill="#D8E8D8" stroke="#A0C8A8" stroke-width="1"/>
+        <text x="340" y="228" text-anchor="middle" font-size="7.5" fill="#587068">BASE  6 mm</text>
+        <!-- BIOCHAR CAVITY 6mm -->
+        <rect id="biochar-rect" x="130" y="182" width="420" height="28" rx="2" fill="#C4A882" stroke="#9A7848" stroke-width="1"/>
+        <text x="260" y="200" text-anchor="middle" font-size="7.5" fill="#6B4820" id="biochar-label">BIOCHAR  6 mm</text>
+        <!-- FILL LAYER 8mm -->
+        <rect x="130" y="154" width="420" height="28" rx="2" fill="#E8EEE8" stroke="#B0C8B4" stroke-width="1"/>
+        <text x="340" y="172" text-anchor="middle" font-size="7.5" fill="#587068">FILL  8 mm</text>
+        <!-- RIB SURFACE 6mm — with V-grooves -->
+        <rect x="130" y="130" width="420" height="24" rx="2" fill="#F0F4F0" stroke="#C8D5CC" stroke-width="1.5"/>
+        <!-- V-groove lines -->
+        <g stroke="#B0C0B8" stroke-width="1" opacity=".8">
+          <line x1="210" y1="130" x2="210" y2="154"/>
+          <line x1="270" y1="130" x2="270" y2="154"/>
+          <line x1="330" y1="130" x2="330" y2="154"/>
+          <line x1="390" y1="130" x2="390" y2="154"/>
+          <line x1="450" y1="130" x2="450" y2="154"/>
+        </g>
+        <text x="340" y="146" text-anchor="middle" font-size="7.5" fill="#587068">RIB SURFACE + V-GROOVES  6 mm</text>
+
+        <!-- Drain holes (circles in fill layer) -->
+        <g fill="#C8D5CC" opacity=".7">
+          <circle cx="200" cy="168" r="3"/>
+          <circle cx="260" cy="168" r="3"/>
+          <circle cx="320" cy="168" r="3"/>
+          <circle cx="380" cy="168" r="3"/>
+          <circle cx="440" cy="168" r="3"/>
+          <circle cx="500" cy="168" r="3"/>
+        </g>
+
+        <!-- Layer annotations on right -->
+        <g font-size="6.5" fill="#8AA898" letter-spacing=".08em">
+          <line x1="556" y1="142" x2="576" y2="142" stroke="#C8D5CC" stroke-width="1"/>
+          <line x1="556" y1="168" x2="576" y2="168" stroke="#C8D5CC" stroke-width="1"/>
+          <line x1="556" y1="196" x2="576" y2="196" stroke="#C8D5CC" stroke-width="1"/>
+          <line x1="556" y1="224" x2="576" y2="224" stroke="#C8D5CC" stroke-width="1"/>
+          <text x="580" y="145">RIB</text>
+          <text x="580" y="171">FILL</text>
+          <text x="580" y="199">BIOCHAR</text>
+          <text x="580" y="227">BASE</text>
+        </g>
+        <!-- Bracket -->
+        <path d="M575,130 L570,130 L570,238 L575,238" fill="none" stroke="#C8D5CC" stroke-width="1"/>
+
+        <!-- ═══ STEP-SPECIFIC LAYERS ═══ -->
+
+        <!-- STEP 1: Cow silhouette above pad -->
+        <g id="s1-cow" opacity="0" style="transition:opacity .5s">
+          <!-- simplified cow body -->
+          <ellipse cx="310" cy="92" rx="60" ry="28" fill="#D8C8A8" stroke="#A89870" stroke-width="1.5"/>
+          <!-- head -->
+          <ellipse cx="372" cy="84" rx="22" ry="18" fill="#D8C8A8" stroke="#A89870" stroke-width="1.5"/>
+          <!-- legs -->
+          <rect x="262" y="114" width="10" height="18" rx="3" fill="#C8B898" stroke="#A89870" stroke-width="1"/>
+          <rect x="282" y="114" width="10" height="18" rx="3" fill="#C8B898" stroke="#A89870" stroke-width="1"/>
+          <rect x="316" y="114" width="10" height="18" rx="3" fill="#C8B898" stroke="#A89870" stroke-width="1"/>
+          <rect x="336" y="114" width="10" height="18" rx="3" fill="#C8B898" stroke="#A89870" stroke-width="1"/>
+          <!-- ear -->
+          <ellipse cx="390" cy="74" rx="7" ry="5" fill="#D8C8A8" stroke="#A89870" stroke-width="1" transform="rotate(-20,390,74)"/>
+          <!-- label -->
+          <text x="310" y="60" text-anchor="middle" font-size="8" fill="#587068" letter-spacing=".08em">COW AT TROUGH</text>
+          <!-- arrow down to pad -->
+          <line x1="310" y1="65" x2="310" y2="128" stroke="#A89870" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+        </g>
+
+        <!-- STEP 2: Urine flow along V-grooves (animated paths) -->
+        <g id="s2-flow" opacity="0" style="transition:opacity .5s">
+          <!-- droplets at center -->
+          <g id="s2-drops">
+            <circle class="drop-anim" cx="280" cy="120" r="4" fill="url(#drop-grad)" opacity=".9"/>
+            <circle class="drop-anim" cx="295" cy="118" r="3.5" fill="url(#drop-grad)" opacity=".9"/>
+            <circle class="drop-anim" cx="310" cy="116" r="5" fill="url(#drop-grad)" opacity=".9"/>
+          </g>
+          <!-- flow paths along grooves -->
+          <g stroke="url(#drop-grad)" stroke-width="2.5" fill="none" opacity=".8" marker-end="url(#arr)">
+            <path id="fp1" d="M270,130 Q230,132 195,134" stroke-dasharray="80" stroke-dashoffset="80"/>
+            <path id="fp2" d="M330,130 Q370,132 405,134" stroke-dasharray="80" stroke-dashoffset="80"/>
+            <path id="fp3" d="M350,130 Q390,132 440,135" stroke-dasharray="80" stroke-dashoffset="80"/>
+            <path id="fp4" d="M260,130 Q220,132 180,135" stroke-dasharray="80" stroke-dashoffset="80"/>
+          </g>
+          <text x="310" y="112" text-anchor="middle" font-size="7.5" fill="#1258A0" letter-spacing=".06em">URINE FLOWS ALONG V-GROOVES →</text>
+          <!-- spread annotation -->
+          <g stroke="#1258A0" stroke-width="1" stroke-dasharray="3,2" opacity=".5">
+            <line x1="155" y1="140" x2="155" y2="115"/>
+            <line x1="495" y1="140" x2="495" y2="115"/>
+            <line x1="155" y1="115" x2="495" y2="115"/>
+          </g>
+          <text x="325" y="110" text-anchor="middle" font-size="7" fill="#1258A0">0.37m²  →  ~2.0m²  (82% ↓ N concentration)</text>
+        </g>
+
+        <!-- STEP 3: NH4+ particles percolating into biochar -->
+        <g id="s3-nh4" opacity="0" style="transition:opacity .5s">
+          <g id="nh4-particles">
+            <circle cx="200" cy="165" r="4.5" fill="#1258A0" opacity=".7"/>
+            <circle cx="260" cy="163" r="4" fill="#1258A0" opacity=".8"/>
+            <circle cx="320" cy="166" r="4.5" fill="#1258A0" opacity=".7"/>
+            <circle cx="380" cy="164" r="4" fill="#1258A0" opacity=".8"/>
+            <circle cx="440" cy="165" r="4.5" fill="#1258A0" opacity=".7"/>
+            <circle cx="500" cy="163" r="4" fill="#1258A0" opacity=".8"/>
+          </g>
+          <!-- NH4+ labels on a couple particles -->
+          <text x="200" y="162" text-anchor="middle" font-size="5.5" fill="#fff" font-weight="bold">NH₄⁺</text>
+          <text x="320" y="163" text-anchor="middle" font-size="5.5" fill="#fff" font-weight="bold">NH₄⁺</text>
+          <text x="440" y="162" text-anchor="middle" font-size="5.5" fill="#fff" font-weight="bold">NH₄⁺</text>
+          <!-- adsorption in biochar -->
+          <g opacity=".8">
+            <circle cx="190" cy="193" r="5" fill="url(#bio-grad)"/>
+            <circle cx="230" cy="196" r="4.5" fill="url(#bio-grad)"/>
+            <circle cx="280" cy="192" r="5" fill="url(#bio-grad)"/>
+            <circle cx="330" cy="195" r="4.5" fill="url(#bio-grad)"/>
+            <circle cx="380" cy="193" r="5" fill="url(#bio-grad)"/>
+            <circle cx="430" cy="196" r="4.5" fill="url(#bio-grad)"/>
+            <circle cx="480" cy="192" r="5" fill="url(#bio-grad)"/>
+            <circle cx="520" cy="195" r="4.5" fill="url(#bio-grad)"/>
+          </g>
+          <text x="340" y="108" text-anchor="middle" font-size="7.5" fill="#1258A0" letter-spacing=".06em">NH₄⁺ ADSORBED INTO BIOCHAR LAYER</text>
+          <text x="340" y="119" text-anchor="middle" font-size="7" fill="#587068">4–6 mg N per gram biochar</text>
+        </g>
+
+        <!-- STEP 4: EC sensor readout counting up -->
+        <g id="s4-ec" opacity="0" style="transition:opacity .5s">
+          <!-- EC probe lines through fill layer -->
+          <line x1="445" y1="154" x2="445" y2="210" stroke="#9A5F00" stroke-width="2.5"/>
+          <line x1="465" y1="154" x2="465" y2="210" stroke="#9A5F00" stroke-width="2.5"/>
+          <circle cx="445" cy="210" r="4" fill="#9A5F00"/>
+          <circle cx="465" cy="210" r="4" fill="#9A5F00"/>
+          <!-- Readout box -->
+          <rect x="390" y="58" width="130" height="52" rx="4" fill="#1A2820" stroke="#9A5F00" stroke-width="1.5"/>
+          <text x="455" y="75" text-anchor="middle" font-size="7" fill="#8AA898" letter-spacing=".12em">EC SENSOR</text>
+          <text id="ec-val" x="455" y="93" text-anchor="middle" font-size="18" fill="#9A5F00" font-weight="500">42%</text>
+          <text x="455" y="104" text-anchor="middle" font-size="6.5" fill="#587068">saturation · ABSORBING</text>
+          <!-- arrow from probe to box -->
+          <line x1="455" y1="110" x2="455" y2="154" stroke="#9A5F00" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="340" y="40" text-anchor="middle" font-size="7.5" fill="#9A5F00" letter-spacing=".06em">EC SENSOR READS BIOCHAR SATURATION</text>
+        </g>
+
+        <!-- STEP 5: LED states green→amber→red -->
+        <g id="s5-led" opacity="0" style="transition:opacity .5s">
+          <!-- LED panel -->
+          <rect x="155" y="55" width="120" height="60" rx="4" fill="#1A2820" stroke="#C8D5CC" stroke-width="1"/>
+          <text x="215" y="70" text-anchor="middle" font-size="6.5" fill="#8AA898" letter-spacing=".1em">SATURATION STATUS</text>
+          <circle id="led-green" cx="185" cy="88" r="10" fill="#1B6B3C"/>
+          <circle id="led-amber" cx="215" cy="88" r="10" fill="#3A3A3A"/>
+          <circle id="led-red"   cx="245" cy="88" r="10" fill="#3A3A3A"/>
+          <text x="185" y="106" text-anchor="middle" font-size="5.5" fill="#587068">OK</text>
+          <text x="215" y="106" text-anchor="middle" font-size="5.5" fill="#587068">~85%</text>
+          <text x="245" y="106" text-anchor="middle" font-size="5.5" fill="#587068">FULL</text>
+          <text x="215" y="42" text-anchor="middle" font-size="7.5" fill="#587068" letter-spacing=".06em">LED STATUS INDICATOR</text>
+        </g>
+
+        <!-- STEP 6: Pull tab + cartridge slide out -->
+        <g id="s6-pull" opacity="0" style="transition:opacity .5s">
+          <!-- pull tab protruding through fill layer -->
+          <rect x="316" y="148" width="28" height="16" rx="3" fill="#9A5F00" stroke="#7A4A00" stroke-width="1.5"/>
+          <text x="330" y="159" text-anchor="middle" font-size="6" fill="#fff" font-weight="bold">PULL</text>
+          <!-- slide-out arrow -->
+          <path d="M200,196 L155,196" stroke="#B02028" stroke-width="2" marker-end="url(#arr)" fill="none"/>
+          <!-- cartridge sliding out (dashed outline moving left) -->
+          <rect x="130" y="182" width="200" height="28" rx="2" fill="none" stroke="#B02028" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="210" y="200" text-anchor="middle" font-size="7.5" fill="#B02028">SPENT CARTRIDGE</text>
+          <text x="340" y="108" text-anchor="middle" font-size="7.5" fill="#9A5F00" letter-spacing=".06em">ONE-FINGER PULL TAB — CARTRIDGE OUT</text>
+        </g>
+
+        <!-- STEP 7: New cartridge slides in, LED back to green -->
+        <g id="s7-new" opacity="0" style="transition:opacity .5s">
+          <!-- fresh cartridge sliding in from right -->
+          <rect x="350" y="182" width="200" height="28" rx="2" fill="#DFF2E8" stroke="#1B6B3C" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="450" y="200" text-anchor="middle" font-size="7.5" fill="#1B6B3C">FRESH CARTRIDGE</text>
+          <path d="M560,196 L530,196" stroke="#1B6B3C" stroke-width="2" marker-end="url(#arr-green)" fill="none"/>
+          <!-- LED all green -->
+          <rect x="155" y="55" width="120" height="60" rx="4" fill="#1A2820" stroke="#C8D5CC" stroke-width="1"/>
+          <text x="215" y="70" text-anchor="middle" font-size="6.5" fill="#8AA898" letter-spacing=".1em">SATURATION STATUS</text>
+          <circle cx="185" cy="88" r="10" fill="#1B6B3C"/>
+          <circle cx="215" cy="88" r="10" fill="#3A3A3A"/>
+          <circle cx="245" cy="88" r="10" fill="#3A3A3A"/>
+          <text x="215" y="42" text-anchor="middle" font-size="7.5" fill="#1B6B3C" letter-spacing=".06em">LED RESETS → GREEN</text>
+        </g>
+
+        <!-- STEP 8: Spent cartridge → fertiliser bag -->
+        <g id="s8-fert" opacity="0" style="transition:opacity .5s">
+          <!-- arrow loop from left (spent) back to right (paddock) -->
+          <path d="M155,196 Q100,250 100,270 Q100,285 155,285 Q400,285 555,285 Q620,285 620,260 Q620,210 555,210"
+                fill="none" stroke="#1B6B3C" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-green)"/>
+          <!-- fertilizer bag icon (simple rectangle with tag) -->
+          <rect x="590" y="185" width="50" height="40" rx="5" fill="#DFF2E8" stroke="#1B6B3C" stroke-width="1.5"/>
+          <text x="615" y="204" text-anchor="middle" font-size="7" fill="#1B6B3C" font-weight="600">N</text>
+          <text x="615" y="214" text-anchor="middle" font-size="5.5" fill="#587068">FERT.</text>
+          <line x1="615" y1="185" x2="615" y2="178" stroke="#1B6B3C" stroke-width="1.5"/>
+          <circle cx="615" cy="175" r="4" fill="none" stroke="#1B6B3C" stroke-width="1.5"/>
+          <!-- spent label on left -->
+          <rect x="120" y="185" width="60" height="30" rx="3" fill="#FADADD" stroke="#B02028" stroke-width="1"/>
+          <text x="150" y="203" text-anchor="middle" font-size="6.5" fill="#B02028">SPENT</text>
+          <text x="340" y="70" text-anchor="middle" font-size="8.5" fill="#1B6B3C" font-weight="600" letter-spacing=".04em">CIRCULAR ECONOMY</text>
+          <text x="340" y="85" text-anchor="middle" font-size="7" fill="#587068">Nitrogen captured at trough → slow-release fertiliser</text>
+          <text x="340" y="97" text-anchor="middle" font-size="7" fill="#587068">returned to paddock · zero waste · zero leaching</text>
+        </g>
+
+      </svg>
+    </div><!-- /svg-wrap -->
+
+    <!-- Step panel -->
+    <div class="how-panel">
+      <div class="step-dots" id="step-dots"></div>
+      <div class="step-num" id="step-num">STEP 1 / 8</div>
+      <div class="step-title" id="step-title">Cow approaches trough</div>
+      <div class="step-desc" id="step-desc">Cows congregate at water troughs twice daily — the highest-risk urine deposition zones on any Canterbury farm. CowPad tiles ring the trough base.</div>
+      <div class="step-controls">
+        <button class="step-btn" id="btn-prev" disabled>← Prev</button>
+        <button class="step-btn play" id="btn-play">▶ Play</button>
+        <button class="step-btn" id="btn-next">Next →</button>
+      </div>
+      <div class="step-progress"><div class="step-progress-fill" id="step-prog-fill" style="width:12.5%"></div></div>
+    </div>
+
+  </div><!-- /how-inner -->
+</div><!-- /how-section -->
+
+<script>
+(function(){
+  const steps = [
+    {
+      title: "Cow approaches trough",
+      desc: "Cows congregate at water troughs twice daily — the highest-risk urine deposition zones on any Canterbury farm. CowPad tiles ring the trough base.",
+      show: ["s1-cow"],
+      leds: null
+    },
+    {
+      title: "Urine flows along V-grooves",
+      desc: "Surface V-grooves (3.5mm wide, 3.0mm deep, 60°) distribute urine radially. Contact area expands from 0.37m² to ~2.0m² — an 82% reduction in local nitrogen concentration.",
+      show: ["s1-cow","s2-flow"],
+      leds: null
+    },
+    {
+      title: "NH₄⁺ adsorbed into biochar",
+      desc: "Urine percolates through drain holes in the fill layer and reaches the biochar cavity. Biochar adsorbs ammonium (NH₄⁺) at 4–6 mg N per gram — a proven, passive chemical bond.",
+      show: ["s3-nh4"],
+      leds: null
+    },
+    {
+      title: "EC sensor reads saturation",
+      desc: "Two stainless steel probes at the base of the biochar measure electrical conductivity. As nitrogen ions accumulate, conductivity rises. The Arduino Nano tracks % saturation in real time.",
+      show: ["s4-ec"],
+      leds: null
+    },
+    {
+      title: "LED indicator changes state",
+      desc: "Green = absorbing (0–60%). Amber = nearing capacity (60–85%). Red = replace now (>85%). Rain discrimination prevents false alerts: probe depth + hardware rain sensor + software EC derivative.",
+      show: ["s5-led"],
+      leds: "cycle"
+    },
+    {
+      title: "Pull tab: cartridge out",
+      desc: "When the LED turns red, the farmer pulls a single tab that protrudes through the fill layer. The spent biochar cartridge slides out in one piece — no tools, no mess, under 30 seconds.",
+      show: ["s6-pull"],
+      leds: "red"
+    },
+    {
+      title: "Fresh cartridge inserted",
+      desc: "A fresh biochar cartridge snaps into the cavity. The EC sensor immediately reads the new baseline — LED resets to green. No recalibration, no service visits.",
+      show: ["s7-new"],
+      leds: null
+    },
+    {
+      title: "Spent cartridge → slow-release fertiliser",
+      desc: "Nitrogen-enriched biochar is collected and processed into certified slow-release fertiliser pellets. The same nitrogen that would have leached to groundwater returns to the paddock as a soil amendment.",
+      show: ["s8-fert"],
+      leds: null
+    }
+  ];
+
+  let current = 0;
+  let playing = false;
+  let timer = null;
+
+  const dotsEl  = document.getElementById('step-dots');
+  const numEl   = document.getElementById('step-num');
+  const titleEl = document.getElementById('step-title');
+  const descEl  = document.getElementById('step-desc');
+  const prevBtn = document.getElementById('btn-prev');
+  const nextBtn = document.getElementById('btn-next');
+  const playBtn = document.getElementById('btn-play');
+  const progEl  = document.getElementById('step-prog-fill');
+
+  // build dots
+  steps.forEach((_,i)=>{
+    const d = document.createElement('button');
+    d.className = 'step-dot' + (i===0?' active':'');
+    d.title = steps[i].title;
+    d.onclick = ()=>{ stopPlay(); goTo(i); };
+    dotsEl.appendChild(d);
+  });
+
+  function allOff(){
+    ['s1-cow','s2-flow','s3-nh4','s4-ec','s5-led','s6-pull','s7-new','s8-fert'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.style.opacity = '0';
+    });
+  }
+
+  function goTo(n){
+    allOff();
+    const s = steps[n];
+    s.show.forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.style.opacity = '1';
+    });
+    // LED animation for step 5
+    if(s.leds === 'cycle') animateLeds();
+    else if(s.leds === 'red') setLed('red');
+    // update panel
+    numEl.textContent = `STEP ${n+1} / ${steps.length}`;
+    titleEl.textContent = s.title;
+    descEl.textContent = s.desc;
+    progEl.style.width = `${((n+1)/steps.length)*100}%`;
+    // dots
+    document.querySelectorAll('.step-dot').forEach((d,i)=>
+      d.classList.toggle('active', i===n));
+    prevBtn.disabled = n===0;
+    nextBtn.disabled = n===steps.length-1;
+    current = n;
+    // trigger flow animation for step 2
+    if(n===1) triggerFlowAnim();
+  }
+
+  function triggerFlowAnim(){
+    ['fp1','fp2','fp3','fp4'].forEach((id,i)=>{
+      const p = document.getElementById(id);
+      if(!p) return;
+      p.style.transition = 'none';
+      p.style.strokeDashoffset = '80';
+      setTimeout(()=>{
+        p.style.transition = `stroke-dashoffset ${0.6}s ease ${i*0.12}s`;
+        p.style.strokeDashoffset = '0';
+      }, 50);
+    });
+  }
+
+  let ledTimer = null;
+  function animateLeds(){
+    if(ledTimer) clearInterval(ledTimer);
+    const states = [
+      {g:'#1B6B3C', a:'#3A3A3A', r:'#3A3A3A'},
+      {g:'#3A3A3A', a:'#9A5F00', r:'#3A3A3A'},
+      {g:'#3A3A3A', a:'#3A3A3A', r:'#B02028'}
+    ];
+    let si = 0;
+    function applyState(st){
+      const lg = document.getElementById('led-green');
+      const la = document.getElementById('led-amber');
+      const lr = document.getElementById('led-red');
+      if(lg) lg.style.fill = st.g;
+      if(la) la.style.fill = st.a;
+      if(lr) lr.style.fill = st.r;
+    }
+    applyState(states[0]);
+    ledTimer = setInterval(()=>{
+      si = (si+1) % states.length;
+      applyState(states[si]);
+    }, 1000);
+  }
+  function setLed(color){
+    if(ledTimer){ clearInterval(ledTimer); ledTimer = null; }
+  }
+
+  function stopPlay(){
+    playing = false;
+    playBtn.textContent = '▶ Play';
+    playBtn.classList.add('play');
+    if(timer){ clearInterval(timer); timer = null; }
+  }
+
+  playBtn.onclick = function(){
+    if(playing){
+      stopPlay();
+    } else {
+      playing = true;
+      playBtn.textContent = '⏸ Pause';
+      playBtn.classList.remove('play');
+      if(current === steps.length-1) goTo(0);
+      timer = setInterval(()=>{
+        if(current < steps.length-1){ goTo(current+1); }
+        else { stopPlay(); }
+      }, 2800);
+    }
+  };
+  prevBtn.onclick = ()=>{ stopPlay(); if(current>0) goTo(current-1); };
+  nextBtn.onclick = ()=>{ stopPlay(); if(current<steps.length-1) goTo(current+1); };
+
+  goTo(0);
+})();
+</script>
 
 <!-- Main Content -->
 <div class="main">
