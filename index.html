@@ -427,38 +427,65 @@ body{
 
         <!-- ═══ STEP LAYERS ═══ -->
 
-        <!-- S1: Cow -->
+        <!-- S1: Cow — side view, facing left toward trough -->
         <g id="s1-cow" opacity="0" style="transition:opacity .6s">
-          <path d="M222,162 Q188,182 185,205 Q184,216 194,214" fill="none" stroke="#C8B88A" stroke-width="3" stroke-linecap="round"/>
-          <ellipse cx="193" cy="214" rx="9" ry="5" fill="#A89870" transform="rotate(-15,193,214)"/>
-          <ellipse cx="305" cy="152" rx="88" ry="42" fill="#F2EDD8" stroke="#C8B080" stroke-width="1.5"/>
-          <path d="M278,124 Q300,116 316,127 Q320,141 308,148 Q292,149 280,139Z" fill="#1E1208" opacity=".85"/>
-          <path d="M328,147 Q344,142 350,153 Q348,163 337,164 Q326,162 327,153Z" fill="#1E1208" opacity=".72"/>
-          <path d="M248,145 Q260,140 264,150 Q262,159 252,159 Q243,157 244,148Z" fill="#1E1208" opacity=".62"/>
-          <ellipse cx="247" cy="192" rx="24" ry="10" fill="#F0C0A8" stroke="#D4A898" stroke-width="1"/>
-          <line x1="239" y1="201" x2="239" y2="206" stroke="#D4A898" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="249" y1="202" x2="249" y2="207" stroke="#D4A898" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="259" y1="201" x2="259" y2="206" stroke="#D4A898" stroke-width="1.5" stroke-linecap="round"/>
-          <rect x="218" y="188" width="13" height="20" rx="4" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
-          <rect x="236" y="188" width="13" height="20" rx="4" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
-          <rect x="216" y="190" width="17" height="8" rx="3" fill="#2A1E0E"/>
-          <rect x="234" y="190" width="17" height="8" rx="3" fill="#2A1E0E"/>
-          <path d="M374,132 Q397,124 404,144 Q405,164 388,172 Q372,172 372,158 Q373,145 374,132Z" fill="#F2EDD8" stroke="#C8B080" stroke-width="1.5"/>
-          <rect x="354" y="188" width="13" height="20" rx="4" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
-          <rect x="372" y="188" width="13" height="20" rx="4" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
-          <rect x="352" y="190" width="17" height="8" rx="3" fill="#2A1E0E"/>
-          <rect x="370" y="190" width="17" height="8" rx="3" fill="#2A1E0E"/>
-          <ellipse cx="412" cy="143" rx="31" ry="25" fill="#F2EDD8" stroke="#C8B080" stroke-width="1.5"/>
-          <ellipse cx="437" cy="153" rx="14" ry="9" fill="#F0C0A8" stroke="#D4A090" stroke-width="1"/>
-          <circle cx="433" cy="155" r="2.5" fill="#C89080" opacity=".8"/>
-          <circle cx="441" cy="155" r="2.5" fill="#C89080" opacity=".8"/>
-          <circle cx="403" cy="135" r="5" fill="#1E1208"/>
-          <circle cx="405" cy="133" r="1.5" fill="#fff" opacity=".65"/>
-          <ellipse cx="396" cy="121" rx="10" ry="6" fill="#F2EDD8" stroke="#C8B080" stroke-width="1" transform="rotate(-20,396,121)"/>
-          <ellipse cx="396" cy="121" rx="6" ry="3.5" fill="#F0C0A8" transform="rotate(-20,396,121)"/>
-          <path d="M402,119 Q413,104 420,110" fill="none" stroke="#D8C070" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- label -->
           <text x="305" y="32" text-anchor="middle" font-size="8" fill="#587068" letter-spacing=".1em">TROUGH — HIGHEST-RISK URINE DEPOSITION ZONE</text>
           <line x1="305" y1="38" x2="305" y2="108" stroke="#A89870" stroke-width="1" stroke-dasharray="3,3" opacity=".35"/>
+
+          <!-- tail (right side, curls down) -->
+          <path d="M385,143 Q414,155 418,178 Q419,191 410,190" fill="none" stroke="#C8B88A" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="411" cy="190" rx="7" ry="4" fill="#A89870" transform="rotate(12,411,190)"/>
+
+          <!-- body -->
+          <ellipse cx="305" cy="143" rx="84" ry="38" fill="#F2EDD8" stroke="#C8B080" stroke-width="1.5"/>
+
+          <!-- Friesian spots -->
+          <path d="M296,112 Q318,104 334,116 Q338,130 325,138 Q308,140 296,130Z" fill="#2A1A0A" opacity=".78"/>
+          <path d="M344,132 Q358,127 364,140 Q362,151 352,152 Q342,151 342,141Z" fill="#2A1A0A" opacity=".62"/>
+          <path d="M258,120 Q270,115 274,126 Q272,136 262,136 Q254,134 255,124Z" fill="#2A1A0A" opacity=".5"/>
+
+          <!-- udder -->
+          <ellipse cx="278" cy="179" rx="24" ry="10" fill="#F0C0A8" stroke="#D4A898" stroke-width="1"/>
+          <line x1="269" y1="188" x2="269" y2="194" stroke="#D4A898" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="278" y1="189" x2="278" y2="196" stroke="#D4A898" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="287" y1="188" x2="287" y2="194" stroke="#D4A898" stroke-width="1.5" stroke-linecap="round"/>
+
+          <!-- front legs (left pair) -->
+          <rect x="245" y="175" width="12" height="21" rx="3" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
+          <rect x="261" y="175" width="12" height="21" rx="3" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
+          <rect x="245" y="188" width="12" height="8" rx="2" fill="#2A1E0E"/>
+          <rect x="261" y="188" width="12" height="8" rx="2" fill="#2A1E0E"/>
+
+          <!-- back legs (right pair) -->
+          <rect x="338" y="175" width="12" height="21" rx="3" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
+          <rect x="354" y="175" width="12" height="21" rx="3" fill="#EAE4CC" stroke="#C8B080" stroke-width="1"/>
+          <rect x="338" y="188" width="12" height="8" rx="2" fill="#2A1E0E"/>
+          <rect x="354" y="188" width="12" height="8" rx="2" fill="#2A1E0E"/>
+
+          <!-- neck -->
+          <path d="M228,128 Q223,140 222,157 Q232,163 242,158 Q248,144 244,127Z" fill="#F2EDD8" stroke="#C8B080" stroke-width="1"/>
+
+          <!-- head -->
+          <ellipse cx="214" cy="148" rx="27" ry="23" fill="#F2EDD8" stroke="#C8B080" stroke-width="1.5"/>
+
+          <!-- ear -->
+          <ellipse cx="228" cy="122" rx="10" ry="6" fill="#F2EDD8" stroke="#C8B080" stroke-width="1" transform="rotate(22,228,122)"/>
+          <ellipse cx="228" cy="122" rx="6" ry="3.5" fill="#F0C0A8" transform="rotate(22,228,122)"/>
+
+          <!-- horn -->
+          <path d="M222,120 Q214,105 208,111" fill="none" stroke="#D8C070" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- muzzle -->
+          <ellipse cx="191" cy="157" rx="14" ry="10" fill="#F0C0A8" stroke="#D4A090" stroke-width="1"/>
+          <circle cx="187" cy="159" r="2.2" fill="#C89080" opacity=".7"/>
+          <circle cx="195" cy="159" r="2.2" fill="#C89080" opacity=".7"/>
+
+          <!-- eye -->
+          <circle cx="222" cy="139" r="5.5" fill="#1E1208"/>
+          <circle cx="224" cy="137" r="1.8" fill="#fff" opacity=".65"/>
+
         </g>
 
         <!-- S2: Urine flow -->
